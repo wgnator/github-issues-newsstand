@@ -17,7 +17,7 @@ export const ISSUE_STATE = { OPEN: "open", CLOSED: "closed" } as const;
 export type IssueOpenOrClosedStatus = typeof ISSUE_STATE[keyof typeof ISSUE_STATE];
 
 export type Repository = {
-  id: string;
+  id: number;
   fullName: string;
   description: string;
   stargazers_count: number;
@@ -34,7 +34,7 @@ export type IssueLabel = {
 };
 
 export type IssueOptions = {
-  selectedRepoName: string | undefined;
+  selectedRepoId: string | undefined;
   openOrClosed: IssueOpenOrClosedStatus;
   page: number;
 };

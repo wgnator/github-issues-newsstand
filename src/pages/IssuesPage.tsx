@@ -1,6 +1,6 @@
 import { useQueryClient, UseQueryResult } from "@tanstack/react-query";
 import { differenceInCalendarDays, differenceInHours } from "date-fns";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../components/UI/Button";
@@ -9,6 +9,7 @@ import LoadingSpinner from "../components/UI/LoadingSpinner";
 import useIssuesQuery from "../fetch_modules/issues/useIssuesQuery";
 import { theme } from "../styles/theme";
 import { Issue, IssueOptions, IssueOpenOrClosedStatus, ISSUE_STATE } from "../types/data";
+import { sortByDate } from "../utils/sort";
 
 const getTimePassedText = (today: Date, past: Date) => {
   if (today instanceof Date === false || past instanceof Date === false) return undefined;
@@ -19,9 +20,9 @@ const getTimePassedText = (today: Date, past: Date) => {
 };
 
 export default function IssuesPage() {
-  const { repoName } = useParams();
+  const { repoId } = useParams();
   const [selectedOptions, setSelectedOptions] = useState<IssueOptions>({
-    selectedRepoName: repoName,
+    selectedRepoId: repoId,
     openOrClosed: ISSUE_STATE.OPEN,
     page: 1,
   });
@@ -39,17 +40,20 @@ export default function IssuesPage() {
 
   const getIssues = (results: UseQueryResult<Issue[]>[]): (Issue | undefined)[] => {
     const allIssues = results.map((result) => result.data).flat();
-    return selectedOptions.selectedRepoName
+    return selectedOptions.selectedRepoId
       ? queryClient.getQueryData([
           "issues",
-          selectedOptions.selectedRepoName,
+          Number(selectedOptions.selectedRepoId),
           selectedOptions.openOrClosed,
           selectedOptions.page,
         ]) || []
-      : allIssues;
+      : sortByDate(allIssues, "created_at", "desc");
   };
 
-  console.log(results);
+  useEffect(() => {
+    setSelectedOptions({ ...selectedOptions, selectedRepoId: repoId });
+  }, [repoId]);
+
   return (
     <Container>
       <IssuesContainer>
@@ -96,7 +100,7 @@ export default function IssuesPage() {
               )
           )}
         <PageNav>
-          {selectedOptions.page > 0 && (
+          {selectedOptions.page > 1 && (
             <PrevButton
               onClick={() =>
                 setSelectedOptions({ ...selectedOptions, page: selectedOptions.page - 1 })
@@ -105,7 +109,7 @@ export default function IssuesPage() {
               &lt; Previous Page
             </PrevButton>
           )}
-          current Page: {selectedOptions.page}
+          Page {selectedOptions.page}
           {hasNextPage && (
             <NextButton
               onClick={() =>

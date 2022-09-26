@@ -15,29 +15,5 @@ export default function useIssuesRequest() {
       )
       .then((response) => response.data.map((data: any) => parseIssueData(repoFullName, data)));
 
-  // const getAllIssues = async (
-  //   repos: Repository[],
-  //   openOrClose: IssueOpenOrClosedStatus,
-  //   page: number
-  // ) => {
-  //   const results = await Promise.allSettled(
-  //     repos.map(
-  //       (repo) =>
-  //         new Promise<Issue[]>((resolve) =>
-  //           resolve(getIssuesByRepoName(repo.fullName, openOrClose, page))
-  //         )
-  //     )
-  //   );
-  //   const issues = results.reduce(
-  //     (prev, result, index) => ({
-  //       ...prev,
-  //       [repos[index].id]: result.status === "fulfilled" ? result.value : [],
-  //     }),
-  //     {} as Issues
-  //   );
-
-  //   return issues;
-  // };
-
   return { getIssuesByRepoName };
 }
