@@ -6,6 +6,7 @@ const SearchInputBox = ({
   onSubmitHandler,
 }: {
   onSubmitHandler: (searchString: string) => void;
+  closeResults: () => void;
 }) => {
   const [searchString, setSearchString] = useState("");
   const handleOnChangeSearchInput = (event: React.ChangeEvent<HTMLInputElement>) =>
@@ -28,25 +29,28 @@ const SearchInputBox = ({
 };
 
 const InputBox = styled.div`
-  width: 50%;
+  width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
+  gap: 0.5rem;
 `;
 const SearchInput = styled.input`
   width: 80%;
   height: 100%;
-  border: 1px solid black;
+  border: 1px solid white;
   border-radius: 5px;
+  padding: 0.5rem;
 `;
 const SubmitSearch = styled.button`
   width: 2rem;
   height: 100%;
-  border: 1px solid black;
+  border: 1px solid white;
   border-radius: 5px;
   * {
     width: 100%;
     height: 100%;
+    color: white;
   }
 `;
 

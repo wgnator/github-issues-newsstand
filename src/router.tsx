@@ -9,7 +9,7 @@ export default function Router() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route path="" element={<IssuesPage />} />
-          <Route path=":repositoryId" element={<IssuesPage />} />
+          <Route path=":repoName" element={<IssuesPage />} />
         </Route>
         <Route path="*" element={<PageNotFound />} />
       </Routes>
