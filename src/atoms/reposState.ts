@@ -14,8 +14,8 @@ const localStorageEffect =
     });
   };
 
-export const savedReposState = atom({
-  key: "savedReposState",
+export const savedRepoNames = atom({
+  key: "savedRepoNames",
   default: [],
   effects: [localStorageEffect("repos")],
 });
