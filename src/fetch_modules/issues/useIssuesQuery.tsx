@@ -11,6 +11,7 @@ export default function useIssuesQuery(selectedOptions: IssueOptions) {
   const { selectedRepoId, openOrClosed, page } = selectedOptions;
   const savedRepos = useRecoilValue(savedRepoNames);
   const { getIssuesByRepoName } = useIssuesRequest();
+
   const useAllIssueQueries = (page: number): UseQueryResult<Issue[]>[] =>
     useQueries({
       queries: savedRepos.map((repo) => ({
@@ -25,17 +26,19 @@ export default function useIssuesQuery(selectedOptions: IssueOptions) {
   const results = useAllIssueQueries(page);
   const nextAllIssues = useAllIssueQueries(page + 1);
 
+  const getHasNextPage = (
+    nextPageData: ReturnType<typeof useAllIssueQueries>,
+    selectedRepoId: string | undefined
+  ): boolean => {
+    if (selectedRepoId)
+      if (nextPageData[savedRepos.findIndex((e) => e.id === Number(selectedRepoId))]?.data)
+        return nextPageData.length > 0;
+      else return false;
+    return nextAllIssues.some((result) => (result?.data ? result?.data.length > 0 : false));
+  };
+
   useEffect(() => {
-    if (selectedRepoId) {
-      console.log(Number(selectedRepoId), savedRepos[0].id);
-      const nextPageData =
-        nextAllIssues[savedRepos.findIndex((e) => e.id === Number(selectedRepoId))]?.data;
-      if (nextPageData) setHasNextPage(nextPageData.length > 0);
-    } else {
-      setHasNextPage(
-        nextAllIssues.some((result) => (result?.data ? result?.data.length > 0 : false))
-      );
-    }
+    setHasNextPage(getHasNextPage(nextAllIssues, selectedRepoId));
   }, [results]);
 
   return { results, hasNextPage };
