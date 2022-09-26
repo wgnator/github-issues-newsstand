@@ -20,7 +20,7 @@ export default function useReposQuery() {
         },
       }
     );
-  console.log(data);
+
   const searchedRepos: Repository[] | undefined =
     data && data.pages ? data.pages.flat() : undefined;
 

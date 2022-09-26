@@ -11,10 +11,18 @@ export default function RepositoriesNav() {
   return (
     <Container>
       {savedRepos.map((repo) => (
-        <Item key={repo.id} onClick={() => navigate(`/${repo.fullName}`)}>
+        <Item
+          key={repo.id}
+          onClick={(event) => {
+            navigate(`/${repo.id}`);
+          }}
+        >
           {repo.fullName}
-          <CloseIcon
-            onClick={() => setSavedRepos(savedRepos.filter((_repo) => _repo.id !== repo.id))}
+          <RemoveIcon
+            onClick={(event) => {
+              event.stopPropagation();
+              setSavedRepos(savedRepos.filter((_repo) => _repo.id !== repo.id));
+            }}
           />
         </Item>
       ))}
@@ -40,4 +48,4 @@ const Item = styled.li`
   padding: 0.2rem;
 `;
 
-const CloseIcon = styled(IoIosClose)``;
+const RemoveIcon = styled(IoIosClose)``;
