@@ -1,0 +1,3 @@
+export const ERROR_MESSAGE = {
+  NO_QUERY_STRING_RECEIVED: 'NO_QUERY_STRING_RECEIVED',
+} as const;

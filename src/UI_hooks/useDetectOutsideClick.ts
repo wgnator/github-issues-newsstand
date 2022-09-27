@@ -1,10 +1,12 @@
 import React, { useEffect, useRef } from 'react';
 
+type Listener = (event: MouseEvent) => void;
+
 export default function useDetectOutsideClick(
   targetElements: React.RefObject<HTMLElement>[],
   callback: () => void,
 ) {
-  const listener = useRef((event: MouseEvent) => {});
+  const listener = useRef<Listener | undefined>();
 
   useEffect(() => {
     const hasClickedOutsideElement = (
@@ -23,7 +25,8 @@ export default function useDetectOutsideClick(
     };
     window.addEventListener('click', listener.current, true);
     return () => {
-      window.removeEventListener('click', listener.current, true);
+      if (listener.current !== undefined)
+        window.removeEventListener('click', listener.current, true);
     };
   }, []);
 }

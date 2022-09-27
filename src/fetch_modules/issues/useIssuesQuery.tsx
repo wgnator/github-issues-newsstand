@@ -2,7 +2,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 import useIssuesRequest from './useIssuesRequest';
 import { useEffect, useState } from 'react';
-import { IssueOptions } from '../../components/IssuesBox';
+import { IssueOptions } from '../../components/Issues/IssuesBox';
 
 export default function useIssuesQuery(repoName: string, selectedOptions: IssueOptions) {
   const [hasNextPage, setHasNextPage] = useState(false);

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Repository } from '../../types/data';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { saveReposState } from '../../atoms/reposState';
 import useIntersectionObserver from '../../UI_hooks/useIntersectionObserver';
@@ -9,6 +9,7 @@ import { BsArrowRightCircle } from 'react-icons/bs';
 import { theme } from '../../styles/theme';
 import AlertDialog from '../UI_common/AlertDialog';
 import Button from '../UI_common/Button';
+import toast, { Toaster } from 'react-hot-toast';
 
 type RepoSearchResultDropdownProps = {
   repos: Repository[] | undefined;
@@ -18,7 +19,7 @@ type RepoSearchResultDropdownProps = {
     isFetchingNextPage: boolean;
     hasNextPage: boolean | undefined;
     isError: boolean;
-    error: any;
+    error: unknown;
   };
   close: () => void;
 };
@@ -28,12 +29,11 @@ export default function RepoSearchResultDropdown({
   fetchState,
   close,
 }: RepoSearchResultDropdownProps) {
-  const { fetchNextPage, isLoading, isFetchingNextPage, hasNextPage } = fetchState;
+  const { fetchNextPage, isLoading, isFetchingNextPage, hasNextPage, error } = fetchState;
   const bottomDetectorRef = useRef(null);
   const rootRef = useRef(null);
   const [savedRepos, setSavedRepos] = useRecoilState(saveReposState);
   const [alert, setAlert] = useState({ isShowing: false, message: '' });
-  console.log(alert);
   const saveRepo = (repo: Repository) => {
     if (savedRepos.length < 4) {
       setSavedRepos([...savedRepos, repo]);
@@ -48,14 +48,18 @@ export default function RepoSearchResultDropdown({
     bottomDetectorRef,
     rootRef,
     () => {
-      console.log('observer intersecting');
       fetchNextPage();
     },
     [repos],
   );
 
+  useEffect(() => {
+    if (error) toast.error(error.message, { duration: 2000 });
+  }, [error]);
+
   return (
     <Container ref={rootRef}>
+      <Toaster />
       {repos && repos.length > 0 ? (
         repos.map((repo) => (
           <Item key={repo.id}>

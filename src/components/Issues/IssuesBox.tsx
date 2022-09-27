@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { theme } from '../../styles/theme';
 import { IssueOpenOrClosedState, ISSUE_STATE } from '../../types/data';
-import { forwardRef, RefObject, useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import useIssuesQuery from '../../fetch_modules/issues/useIssuesQuery';
 import { BsArrowsAngleExpand } from 'react-icons/bs';
 import IssuesToolbarSection from './IssuesToolbarSection';
