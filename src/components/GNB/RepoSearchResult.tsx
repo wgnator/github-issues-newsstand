@@ -1,14 +1,14 @@
-import styled from "styled-components";
-import { Repository } from "../../types/data";
-import { useRef, useState } from "react";
-import { useRecoilState } from "recoil";
-import { savedRepoNames } from "../../atoms/reposState";
-import useIntersectionObserver from "../../UI_hooks/useIntersectionObserver";
-import useDetectOutsideClick from "../../UI_hooks/useDetectOutsideClick";
-import LoadingSpinner from "../UI/LoadingSpinner";
-import { BsArrowRightCircle } from "react-icons/bs";
-import { theme } from "../../styles/theme";
-import AlertDialog from "../UI/AlertDialog";
+import styled from 'styled-components';
+import { Repository } from '../../types/data';
+import React, { useRef, useState } from 'react';
+import { useRecoilState } from 'recoil';
+import { saveReposState } from '../../atoms/reposState';
+import useIntersectionObserver from '../../UI_hooks/useIntersectionObserver';
+import LoadingSpinner from '../UI_common/LoadingSpinner';
+import { BsArrowRightCircle } from 'react-icons/bs';
+import { theme } from '../../styles/theme';
+import AlertDialog from '../UI_common/AlertDialog';
+import Button from '../UI_common/Button';
 
 type RepoSearchResultDropdownProps = {
   repos: Repository[] | undefined;
@@ -28,26 +28,30 @@ export default function RepoSearchResultDropdown({
   fetchState,
   close,
 }: RepoSearchResultDropdownProps) {
-  const { fetchNextPage, isLoading, isFetchingNextPage, hasNextPage, isError, error } = fetchState;
+  const { fetchNextPage, isLoading, isFetchingNextPage, hasNextPage } = fetchState;
   const bottomDetectorRef = useRef(null);
   const rootRef = useRef(null);
-  const [savedRepos, setSavedRepos] = useRecoilState(savedRepoNames);
-  const [alert, setAlert] = useState({ isShowing: false, message: "" });
+  const [savedRepos, setSavedRepos] = useRecoilState(saveReposState);
+  const [alert, setAlert] = useState({ isShowing: false, message: '' });
   console.log(alert);
   const saveRepo = (repo: Repository) => {
     if (savedRepos.length < 4) {
       setSavedRepos([...savedRepos, repo]);
       close();
-    } else setAlert({ isShowing: true, message: "리포지토리 저장 가능 한도(4개)를 초과했어요." });
+    } else
+      setAlert({
+        isShowing: true,
+        message: '리포지토리 저장 가능 한도(4개)를 초과했어요.',
+      });
   };
   useIntersectionObserver(
     bottomDetectorRef,
     rootRef,
     () => {
-      console.log("observer intersecting");
+      console.log('observer intersecting');
       fetchNextPage();
     },
-    [repos]
+    [repos],
   );
 
   return (
@@ -69,7 +73,7 @@ export default function RepoSearchResultDropdown({
               </ItemDetails>
             </ItemInfo>
             <SaveButton
-              onClick={(event) => {
+              onClick={(event: React.MouseEvent) => {
                 event.stopPropagation();
                 saveRepo(repo);
               }}
@@ -81,17 +85,22 @@ export default function RepoSearchResultDropdown({
         ))
       ) : isLoading ? (
         <SpinnerWrapper>
-          <LoadingSpinner color={theme.primaryColor} backgroundColor={theme.backgroundColor} />
+          <LoadingSpinner
+            color={theme.primaryColor}
+            backgroundColor={theme.backgroundColor}
+          />
         </SpinnerWrapper>
       ) : (
         <Status>No Results</Status>
       )}
       {hasNextPage && !isFetchingNextPage && <BottomDetector ref={bottomDetectorRef} />}
 
-      {isFetchingNextPage && <div>Loading...</div>}
+      {isFetchingNextPage && <Loading>Loading...</Loading>}
       {alert.isShowing && (
         <AlertDialog
-          onConfirm={(isConfirmed) => isConfirmed && setAlert({ isShowing: false, message: "" })}
+          onConfirm={(isConfirmed) =>
+            isConfirmed && setAlert({ isShowing: false, message: '' })
+          }
         >
           {alert.message}
         </AlertDialog>
@@ -110,6 +119,7 @@ const Container = styled.ul`
   overflow-x: hidden;
   color: ${theme.fontColor};
   background-color: white;
+  z-index: 10;
   li {
     border-bottom: 1px solid ${theme.primaryColor};
   }
@@ -134,7 +144,7 @@ const ItemDetails = styled.div`
   display: flex;
   gap: 0.3rem;
 `;
-const SaveButton = styled.button`
+const SaveButton = styled(Button)`
   border: 1px solid ${theme.primaryColor};
   border-radius: 5px;
   display: flex;
@@ -150,6 +160,12 @@ const BottomDetector = styled.div`
   height: 10px;
 `;
 
+const Loading = styled.div`
+  height: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 const SpinnerWrapper = styled.div`
   position: absolute;
   top: 0;

@@ -1,45 +1,42 @@
-import { useQueries, UseQueryResult } from "@tanstack/react-query";
-import { useRecoilValue } from "recoil";
-import { savedRepoNames } from "../../atoms/reposState";
-import { IssueOptions, Issue } from "../../types/data";
-import useIssuesRequest from "./useIssuesRequest";
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
-import { useEffect, useState } from "react";
+import useIssuesRequest from './useIssuesRequest';
+import { useEffect, useState } from 'react';
+import { IssueOptions } from '../../components/IssuesBox';
 
-export default function useIssuesQuery(selectedOptions: IssueOptions) {
+export default function useIssuesQuery(repoName: string, selectedOptions: IssueOptions) {
   const [hasNextPage, setHasNextPage] = useState(false);
-  const { selectedRepoId, openOrClosed, page } = selectedOptions;
-  const savedRepos = useRecoilValue(savedRepoNames);
+  const { openOrClosed, page } = selectedOptions;
+
   const { getIssuesByRepoName } = useIssuesRequest();
+  const queryClient = useQueryClient();
 
-  const useAllIssueQueries = (page: number): UseQueryResult<Issue[]>[] =>
-    useQueries({
-      queries: savedRepos.map((repo) => ({
-        queryKey: ["issues", repo.id, openOrClosed, page],
-        queryFn: () => getIssuesByRepoName(repo.fullName, openOrClosed, page),
-        staleTime: Infinity,
-        retry: 1,
-        refetchOnWindowFocus: false,
-        keepPreviousData: true,
-      })),
-    });
-  const results = useAllIssueQueries(page);
-  const nextAllIssues = useAllIssueQueries(page + 1);
+  const { isLoading, isError, error, data } = useQuery(
+    ['issues', repoName, openOrClosed, page],
+    () => getIssuesByRepoName(repoName, openOrClosed, page),
+    {
+      staleTime: Infinity,
+      retry: 1,
+      refetchOnWindowFocus: false,
+    },
+  );
 
-  const getHasNextPage = (
-    nextPageData: ReturnType<typeof useAllIssueQueries>,
-    selectedRepoId: string | undefined
-  ): boolean => {
-    if (selectedRepoId)
-      if (nextPageData[savedRepos.findIndex((e) => e.id === Number(selectedRepoId))]?.data)
-        return nextPageData.length > 0;
-      else return false;
-    return nextAllIssues.some((result) => (result?.data ? result?.data.length > 0 : false));
-  };
+  const getHasNextPage = () =>
+    queryClient
+      .fetchQuery(['issues', repoName, openOrClosed, page + 1], () =>
+        getIssuesByRepoName(repoName, openOrClosed, page + 1),
+      )
+      .then((data) => data.length > 0 && setHasNextPage(true));
 
   useEffect(() => {
-    setHasNextPage(getHasNextPage(nextAllIssues, selectedRepoId));
-  }, [results]);
+    getHasNextPage();
+  }, [data]);
 
-  return { results, hasNextPage };
+  return {
+    isLoading,
+    isError,
+    error,
+    data,
+    hasNextPage,
+  };
 }

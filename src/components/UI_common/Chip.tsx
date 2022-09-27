@@ -1,14 +1,14 @@
-import { ReactNode } from "react";
-import styled from "styled-components";
-import { theme } from "../../styles/theme";
+import { ReactNode } from 'react';
+import styled from 'styled-components';
+import { theme } from '../../styles/theme';
 
 export default function Chip({
   children,
   color,
   className,
 }: {
-  children: ReactNode;
-  color: string;
+  children?: ReactNode;
+  color?: string;
   className?: string;
 }) {
   return (
@@ -18,8 +18,8 @@ export default function Chip({
   );
 }
 
-const Container = styled.span<{ color: string }>`
-  background-color: ${(props) => props.color + "80"};
+const Container = styled.span<{ color?: string }>`
+  background-color: ${(props) => props.color + '80'};
   border-radius: 1rem;
   padding: 0.15rem 0.4rem;
   font-size: 0.7rem;

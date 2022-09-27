@@ -1,5 +1,5 @@
-import { createGlobalStyle } from "styled-components";
-import { theme } from "./theme";
+import { createGlobalStyle } from 'styled-components';
+import { theme } from './theme';
 
 export const GlobalStyle = createGlobalStyle`
 
@@ -10,7 +10,6 @@ export const GlobalStyle = createGlobalStyle`
   font-weight: 400;
 
   color: ${theme.fontColor};
-  background-color: ${theme.backgroundColor};
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;

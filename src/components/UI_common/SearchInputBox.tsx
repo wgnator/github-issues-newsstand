@@ -1,23 +1,26 @@
-import styled from "styled-components";
-import { AiOutlineSearch } from "react-icons/ai";
-import { useState } from "react";
+import styled from 'styled-components';
+import { AiOutlineSearch } from 'react-icons/ai';
+import { useState } from 'react';
 
 const SearchInputBox = ({
   onSubmitHandler,
+  placeholder,
 }: {
   onSubmitHandler: (searchString: string) => void;
   closeResults: () => void;
+  placeholder: string;
 }) => {
-  const [searchString, setSearchString] = useState("");
-  const handleOnChangeSearchInput = (event: React.ChangeEvent<HTMLInputElement>) =>
-    setSearchString(event.target.value);
+  const [searchString, setSearchString] = useState('');
+  const handleOnChangeSearchInput = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => setSearchString(event.target.value);
 
   return (
     <InputBox>
       <SearchInput
         type="text"
         id="search_string"
-        placeholder="Search Repositories"
+        placeholder={placeholder}
         value={searchString}
         onChange={handleOnChangeSearchInput}
       />

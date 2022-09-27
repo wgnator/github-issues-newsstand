@@ -4,7 +4,7 @@ export type Issue = {
   number: number;
   title: string;
   userName: string;
-  state: IssueOpenOrClosedStatus;
+  state: IssueOpenOrClosedState;
   labels: IssueLabel[];
   created_at: Date;
   updated_at: Date;
@@ -13,8 +13,8 @@ export type Issue = {
 };
 export type Issues = { [id: string]: Issue[] | [] };
 
-export const ISSUE_STATE = { OPEN: "open", CLOSED: "closed" } as const;
-export type IssueOpenOrClosedStatus = typeof ISSUE_STATE[keyof typeof ISSUE_STATE];
+export const ISSUE_STATE = { OPEN: 'open', CLOSED: 'closed' } as const;
+export type IssueOpenOrClosedState = typeof ISSUE_STATE[keyof typeof ISSUE_STATE];
 
 export type Repository = {
   id: number;
@@ -31,10 +31,4 @@ export type IssueLabel = {
   name: string;
   color: string;
   description: string;
-};
-
-export type IssueOptions = {
-  selectedRepoId: string | undefined;
-  openOrClosed: IssueOpenOrClosedStatus;
-  page: number;
 };
