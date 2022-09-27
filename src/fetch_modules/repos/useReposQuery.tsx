@@ -5,7 +5,7 @@ import { Repository } from '../../types/data';
 import useReposRequest from './useReposRequest';
 
 export default function useReposQuery() {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState<string>('');
   const { searchRepos } = useReposRequest();
   const {
     fetchNextPage,
@@ -15,15 +15,20 @@ export default function useReposQuery() {
     isError,
     error,
     data,
-  } = useInfiniteQuery(
+  } = useInfiniteQuery<Repository[]>(
     ['searchedRepos', searchQuery],
-    ({ pageParam = 1 }) => searchRepos(searchQuery, pageParam),
+    ({ pageParam = 1 }) => (searchQuery ? searchRepos(searchQuery, pageParam) : []),
     {
+      cacheTime: 0,
+      initialData: {
+        pageParams: [undefined],
+        pages: [],
+      },
       retry: 1,
       refetchOnWindowFocus: false,
       keepPreviousData: true,
       getNextPageParam: (lastPage, allPages) => {
-        return lastPage.length < ITEMS_PER_PAGE
+        return !lastPage || lastPage.length < ITEMS_PER_PAGE
           ? undefined
           : allPages.length + 1;
       },
@@ -36,12 +41,12 @@ export default function useReposQuery() {
   return {
     searchQuery,
     setSearchQuery,
+    searchedRepos,
     fetchNextPage,
     isLoading,
     isFetchingNextPage,
     hasNextPage,
     isError,
     error,
-    searchedRepos,
   };
 }

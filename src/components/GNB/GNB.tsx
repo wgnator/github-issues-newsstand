@@ -6,16 +6,20 @@ import useReposQuery from '../../fetch_modules/repos/useReposQuery';
 import { theme } from '../../styles/theme';
 import useDetectOutsideClick from '../../UI_hooks/useDetectOutsideClick';
 import { useNavigate } from 'react-router-dom';
+import createDebouncedAction from '../../utils/debouncer';
+import { DEBOUNCER_DELAY_TIME } from '../../consts/consts';
 
 export default function GNB() {
   const { setSearchQuery, searchedRepos: repos, ...fetchState } = useReposQuery();
   const outsideClickRef = useRef(null);
   const [isShowingSearchResult, setIsShowingSearchResult] = useState(false);
   const navigate = useNavigate();
-  const onSearchSubmit = (searchString: string) => {
-    setSearchQuery(encodeURIComponent(searchString));
-    setIsShowingSearchResult(true);
-  };
+
+  const setSearchWithDebouncer = createDebouncedAction<string>(
+    (searchString) => setSearchQuery(encodeURIComponent(searchString)),
+    DEBOUNCER_DELAY_TIME,
+  );
+
   useDetectOutsideClick([outsideClickRef], () => setIsShowingSearchResult(false));
 
   return (
@@ -24,8 +28,11 @@ export default function GNB() {
       <Title onClick={() => navigate('/')}>Github Issues Newsstand</Title>
       <InputBoxWrapper ref={outsideClickRef}>
         <SearchInputBox
-          onSubmitHandler={onSearchSubmit}
-          closeResults={() => setIsShowingSearchResult(false)}
+          handleOnSearch={(searchString) => setSearchWithDebouncer(searchString)}
+          handleOnSubmit={(searchString) =>
+            setSearchQuery(encodeURIComponent(searchString))
+          }
+          handleOnFocus={() => setIsShowingSearchResult(true)}
           placeholder="Search Repositories"
         />
         {isShowingSearchResult && (

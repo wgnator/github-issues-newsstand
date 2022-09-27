@@ -24,6 +24,7 @@ export default function RepositoriesNav() {
             onClick={(event) => {
               event.stopPropagation();
               setSavedRepos(savedRepos.filter((_repo) => _repo.id !== repo.id));
+              navigate('/');
             }}
           />
         </Item>

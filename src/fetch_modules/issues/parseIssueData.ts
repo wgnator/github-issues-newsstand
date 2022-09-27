@@ -1,9 +1,9 @@
-import { Issue, IssueLabel } from "../../types/data";
+import { IncomingIssueData, Issue, IssueLabel } from '../../types/data';
 
-const parseIssueData = (repoFullName: string, data: any): Issue => ({
+const parseIssueData = (repoFullName: string, data: IncomingIssueData): Issue => ({
   id: data.id,
   repoFullName: repoFullName,
-  number: Number(data.number),
+  number: data.number,
   title: data.title,
   userName: data.user.login,
   state: data.state,
@@ -15,7 +15,7 @@ const parseIssueData = (repoFullName: string, data: any): Issue => ({
   })),
   created_at: new Date(data.created_at),
   updated_at: new Date(data.updated_at),
-  comments: Number(data.comments),
+  comments: data.comments,
   html_url: data.html_url,
 });
 

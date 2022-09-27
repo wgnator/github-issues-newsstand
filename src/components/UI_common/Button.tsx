@@ -7,9 +7,9 @@ export default function Button(props: ComponentProps<any>) {
 }
 
 const Container = styled.button`
-  color: ${theme.primaryColor};
+  color: ${theme.primaryDarkColor};
   padding: 0.2rem 0.5rem;
-  border: 1px solid ${theme.primaryColor};
+  border: 1px solid ${theme.primaryDarkColor};
   border-radius: 10px;
   cursor: pointer;
   display: flex;
@@ -17,7 +17,7 @@ const Container = styled.button`
   align-items: center;
   transition: background-color 0.1s, color 0.1s;
   &:hover {
-    background-color: ${theme.primaryColor};
+    background-color: ${theme.primaryDarkColor};
     color: white;
   }
 `;

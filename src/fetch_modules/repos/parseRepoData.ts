@@ -1,6 +1,6 @@
-import { Repository } from "../../types/data";
+import { IncomingRepositoryData, Repository } from '../../types/data';
 
-const parseRepositoryData = (data: any): Repository => ({
+const parseRepositoryData = (data: IncomingRepositoryData): Repository => ({
   id: data.id,
   fullName: data.full_name,
   description: data.description,

@@ -1,15 +1,19 @@
-import React from "react";
-import styled from "styled-components";
-import { theme } from "../../styles/theme";
-import Button from "./Button";
+import React, { ReactNode } from 'react';
+import styled from 'styled-components';
+import { theme } from '../../styles/theme';
+import Button from './Button';
 
 type AlertDialogPropType = {
   isCancelable?: boolean;
-  children: any;
+  children: ReactNode;
   onConfirm: (hasConfirmed: boolean) => void;
 };
 
-export default function AlertDialog({ isCancelable, children, onConfirm }: AlertDialogPropType) {
+export default function AlertDialog({
+  isCancelable,
+  children,
+  onConfirm,
+}: AlertDialogPropType) {
   return (
     <Veil>
       <Container>

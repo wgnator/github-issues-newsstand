@@ -1,4 +1,4 @@
-import { Children, forwardRef, ReactNode, RefObject, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { theme } from '../../styles/theme';
 import { Issue } from '../../types/data';

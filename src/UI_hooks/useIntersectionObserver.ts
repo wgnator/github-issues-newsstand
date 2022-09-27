@@ -1,15 +1,12 @@
-import React, { RefObject } from "react";
+import React, { RefObject } from 'react';
 
 export default function useIntersectionObserver(
   detectorRef: RefObject<HTMLElement>,
   rootRef: RefObject<HTMLElement>,
   callback: () => void,
-  dependencies: any[] = []
+  dependencies: any[] = [],
 ) {
-  const onIntersection = (
-    entries: IntersectionObserverEntry[],
-    _observer: IntersectionObserver
-  ) => {
+  const onIntersection = (entries: IntersectionObserverEntry[]) => {
     if (entries[0].isIntersecting) {
       callback();
     }
@@ -18,7 +15,7 @@ export default function useIntersectionObserver(
   React.useEffect(() => {
     const options = {
       root: rootRef.current,
-      rootMargin: "200px",
+      rootMargin: '200px',
       threshold: 0,
     };
     const observer = new IntersectionObserver(onIntersection, options);
