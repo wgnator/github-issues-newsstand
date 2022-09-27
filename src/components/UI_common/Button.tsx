@@ -1,6 +1,6 @@
-import { ComponentProps } from "react";
-import styled from "styled-components";
-import { theme } from "../../styles/theme";
+import { ComponentProps } from 'react';
+import styled from 'styled-components';
+import { theme } from '../../styles/theme';
 
 export default function Button(props: ComponentProps<any>) {
   return <Container {...props} />;
@@ -10,7 +10,6 @@ const Container = styled.button`
   color: ${theme.primaryColor};
   padding: 0.2rem 0.5rem;
   border: 1px solid ${theme.primaryColor};
-  background-color: ${theme.backgroundColor};
   border-radius: 10px;
   cursor: pointer;
   display: flex;

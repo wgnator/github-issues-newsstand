@@ -1,11 +1,11 @@
-import styled from "styled-components";
-import { useRef, useState } from "react";
-import SearchInputBox from "../UI/SearchInputBox";
-import RepoSearchResultDropdown from "./SearchRepoResult";
-import useReposQuery from "../../fetch_modules/repos/useReposQuery";
-import { theme } from "../../styles/theme";
-import useDetectOutsideClick from "../../UI_hooks/useDetectOutsideClick";
-import { useNavigate } from "react-router-dom";
+import styled from 'styled-components';
+import { useRef, useState } from 'react';
+import SearchInputBox from '../UI_common/SearchInputBox';
+import RepoSearchResultDropdown from './RepoSearchResult';
+import useReposQuery from '../../fetch_modules/repos/useReposQuery';
+import { theme } from '../../styles/theme';
+import useDetectOutsideClick from '../../UI_hooks/useDetectOutsideClick';
+import { useNavigate } from 'react-router-dom';
 
 export default function GNB() {
   const { setSearchQuery, searchedRepos: repos, ...fetchState } = useReposQuery();
@@ -21,11 +21,12 @@ export default function GNB() {
   return (
     <Container>
       {isShowingSearchResult && <Veil />}
-      <Title onClick={() => navigate("/")}>Github Issues Newsstand</Title>
+      <Title onClick={() => navigate('/')}>Github Issues Newsstand</Title>
       <InputBoxWrapper ref={outsideClickRef}>
         <SearchInputBox
           onSubmitHandler={onSearchSubmit}
           closeResults={() => setIsShowingSearchResult(false)}
+          placeholder="Search Repositories"
         />
         {isShowingSearchResult && (
           <RepoSearchResultDropdown
@@ -57,6 +58,7 @@ const Veil = styled.div`
   width: 100%;
   height: calc(100vh - 3rem);
   background-color: rgba(0, 0, 0, 0.5);
+  z-index: 10;
 `;
 
 const Title = styled.h2`
