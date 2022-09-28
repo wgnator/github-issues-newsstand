@@ -1,6 +1,7 @@
 import { githubService } from '../../axios/reposService';
 import { ITEMS_PER_PAGE } from '../../consts/consts';
-import { IncomingIssueData, Issue, IssueOpenOrClosedState } from '../../types/data';
+import { IncomingIssueData, Issue } from '../../types/data';
+import { IssueOpenOrClosedState } from '../../types/states';
 import parseIssueData from './parseIssueData';
 
 export default function useIssuesRequest() {

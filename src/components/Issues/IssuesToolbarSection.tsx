@@ -1,7 +1,8 @@
 import { Dispatch } from 'react';
 import styled from 'styled-components';
+import { ISSUE_STATE } from '../../consts/consts';
 import { theme } from '../../styles/theme';
-import { IssueOpenOrClosedState, ISSUE_STATE } from '../../types/data';
+import { IssueOpenOrClosedState } from '../../types/states';
 import { IssueOptions } from './IssuesBox';
 
 export default function IssuesToolbarSection({

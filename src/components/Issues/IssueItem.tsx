@@ -1,5 +1,6 @@
 import { differenceInCalendarDays, differenceInHours } from 'date-fns';
 import styled from 'styled-components';
+import { MOBILE_WIDTH } from '../../consts/consts';
 import { Issue } from '../../types/data';
 import Chip from '../UI_common/Chip';
 
@@ -65,6 +66,9 @@ const Container = styled.li<{ backgroundColor?: string }>`
     * {
       line-height: 1.1;
     }
+  }
+  @media (max-width: ${MOBILE_WIDTH}px) {
+    font-size: 0.8rem;
   }
 `;
 

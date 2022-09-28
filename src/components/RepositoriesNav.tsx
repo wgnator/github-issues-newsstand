@@ -5,6 +5,7 @@ import { saveReposState } from '../atoms/reposState';
 import { theme } from '../styles/theme';
 import { IoIosClose } from 'react-icons/io';
 import Button from './UI_common/Button';
+import { MOBILE_WIDTH } from '../consts/consts';
 
 export default function RepositoriesNav() {
   const [savedRepos, setSavedRepos] = useRecoilState(saveReposState);
@@ -29,13 +30,13 @@ export default function RepositoriesNav() {
           />
         </Item>
       ))}
-      <ShowAllButton onClick={() => navigate(`/`)}>Show All</ShowAllButton>
+      <ShowAllButton onClick={() => navigate(`/`)} />
     </Container>
   );
 }
 
 const Container = styled.nav`
-  min-height: 3rem;
+  height: 3rem;
   width: 100%;
   justify-content: flex-start;
   display: flex;
@@ -46,6 +47,14 @@ const Container = styled.nav`
 const ShowAllButton = styled(Button)`
   width: 18%;
   margin-left: auto;
+  &::before {
+    content: 'Show All';
+  }
+  @media (max-width: ${MOBILE_WIDTH}px) {
+    &::before {
+      content: 'All';
+    }
+  }
 `;
 const Item = styled.li<{ color: string }>`
   width: 18%;
@@ -57,12 +66,19 @@ const Item = styled.li<{ color: string }>`
   align-items: center;
   justify-content: space-between;
   padding: 0.2rem 0.5rem;
+  @media (max-width: ${MOBILE_WIDTH}px) {
+    padding: 0.2rem 0.2rem;
+    font-size: 0.8rem;
+  }
 `;
 const RepoName = styled.div`
   width: 100%;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+  @media (max-width: ${MOBILE_WIDTH}px) {
+    text-overflow: inherit;
+  }
 `;
 
 const RemoveIcon = styled(IoIosClose)`

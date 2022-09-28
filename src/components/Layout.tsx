@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom';
 import Main from './Main';
-import GNB from './GNB/GNB';
+import TopNav from './TopNav/TopNav';
 import RepositoriesNav from './RepositoriesNav';
 import { RecoilRoot } from 'recoil';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -12,7 +12,7 @@ export default function Layout() {
     <RecoilRoot>
       <QueryClientProvider client={queryClient}>
         <ReactQueryDevtools />
-        <GNB />
+        <TopNav />
         <RepositoriesNav />
         <Main>
           <Outlet />

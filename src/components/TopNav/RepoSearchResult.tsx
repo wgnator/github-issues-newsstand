@@ -1,25 +1,29 @@
 import styled from 'styled-components';
 import { Repository } from '../../types/data';
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { saveReposState } from '../../atoms/reposState';
 import useIntersectionObserver from '../../UI_hooks/useIntersectionObserver';
 import LoadingSpinner from '../UI_common/LoadingSpinner';
-import { BsArrowRightCircle } from 'react-icons/bs';
 import { theme } from '../../styles/theme';
 import AlertDialog from '../UI_common/AlertDialog';
-import Button from '../UI_common/Button';
 import toast, { Toaster } from 'react-hot-toast';
+import { InfiniteData } from '@tanstack/react-query';
+import { MOBILE_WIDTH } from '../../consts/consts';
+import RepoItem from './RepoItem';
+import { MdClose } from 'react-icons/md';
+import Button from '../UI_common/Button';
 
 type RepoSearchResultDropdownProps = {
-  repos: Repository[] | undefined;
+  repos: InfiniteData<Repository[]> | undefined;
   fetchState: {
     fetchNextPage: () => void;
     isLoading: boolean;
+    isFetching: boolean;
     isFetchingNextPage: boolean;
     hasNextPage: boolean | undefined;
     isError: boolean;
-    error: unknown;
+    error: Error | null;
   };
   close: () => void;
 };
@@ -29,11 +33,13 @@ export default function RepoSearchResultDropdown({
   fetchState,
   close,
 }: RepoSearchResultDropdownProps) {
-  const { fetchNextPage, isLoading, isFetchingNextPage, hasNextPage, error } = fetchState;
+  const { fetchNextPage, isLoading, isFetching, isFetchingNextPage, hasNextPage, error } =
+    fetchState;
   const bottomDetectorRef = useRef(null);
   const rootRef = useRef(null);
   const [savedRepos, setSavedRepos] = useRecoilState(saveReposState);
   const [alert, setAlert] = useState({ isShowing: false, message: '' });
+
   const saveRepo = (repo: Repository) => {
     if (savedRepos.length < 4) {
       setSavedRepos([...savedRepos, repo]);
@@ -44,6 +50,12 @@ export default function RepoSearchResultDropdown({
         message: '리포지토리 저장 가능 한도(4개)를 초과했어요.',
       });
   };
+
+  const flattenPage = (data: undefined | InfiniteData<Repository[]>) =>
+    data && data.pages ? data.pages.flat() : undefined;
+
+  const flattenedPage = flattenPage(repos);
+
   useIntersectionObserver(
     bottomDetectorRef,
     rootRef,
@@ -59,35 +71,18 @@ export default function RepoSearchResultDropdown({
 
   return (
     <Container ref={rootRef}>
+      <CloseButtonWrapper>
+        <CloseButton onClick={() => close()}>
+          Close
+          <CloseIcon />
+        </CloseButton>
+      </CloseButtonWrapper>
       <Toaster />
-      {repos && repos.length > 0 ? (
-        repos.map((repo) => (
-          <Item key={repo.id}>
-            <ItemInfo>
-              <h3>{repo.fullName}</h3>
-              <div>{repo.description}</div>
-              <ItemDetails>
-                <span>⭐ {repo.stargazers_count}</span>
-                <span>|</span>
-                <span>{repo.language}</span>
-                <span>|</span>
-                <span>{repo.license}</span>
-                <span>|</span>
-                <span>Last Update: {repo.updated_at.toLocaleDateString()}</span>
-              </ItemDetails>
-            </ItemInfo>
-            <SaveButton
-              onClick={(event: React.MouseEvent) => {
-                event.stopPropagation();
-                saveRepo(repo);
-              }}
-            >
-              <span> Save </span>
-              <SaveRepoIcon />
-            </SaveButton>
-          </Item>
+      {repos && flattenedPage && flattenedPage.length > 0 ? (
+        flattenedPage.map((repo) => (
+          <RepoItem key={repo.id} repo={repo} saveRepo={saveRepo} />
         ))
-      ) : isLoading ? (
+      ) : isLoading || isFetching ? (
         <SpinnerWrapper>
           <LoadingSpinner
             color={theme.primaryColor}
@@ -130,34 +125,11 @@ const Container = styled.ul`
   li:last-child {
     border-bottom: none;
   }
+  @media (max-width: ${MOBILE_WIDTH}px) {
+    width: 100%;
+    left: 0;
+  }
 `;
-const Item = styled.li`
-  width: 100%;
-  padding: 0.3rem 0.5rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-`;
-const ItemInfo = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-`;
-const ItemDetails = styled.div`
-  display: flex;
-  gap: 0.3rem;
-`;
-const SaveButton = styled(Button)`
-  border: 1px solid ${theme.primaryColor};
-  border-radius: 5px;
-  display: flex;
-  gap: 0.2rem;
-  width: 5rem;
-  height: 2rem;
-  color: ${theme.primaryColor};
-`;
-const SaveRepoIcon = styled(BsArrowRightCircle)``;
 
 const BottomDetector = styled.div`
   width: 100%;
@@ -188,3 +160,23 @@ const Status = styled.div`
   justify-content: center;
   align-items: center;
 `;
+const CloseButtonWrapper = styled.div`
+  position: fixed;
+  display: flex;
+  justify-content: right;
+
+  padding: 0.2rem 1rem;
+  width: 80%;
+  height: 1.5rem;
+  z-index: 20;
+  @media (max-width: ${MOBILE_WIDTH}px) {
+    width: 100%;
+  }
+`;
+const CloseButton = styled((props) => Button({ ...props, color: theme.primaryColor }))`
+  height: 1.5rem;
+  font-size: 0.7rem;
+  background-color: white;
+`;
+
+const CloseIcon = styled(MdClose)``;

@@ -10,12 +10,13 @@ export default function useReposQuery() {
   const {
     fetchNextPage,
     isLoading,
+    isFetching,
     isFetchingNextPage,
     hasNextPage,
     isError,
     error,
     data,
-  } = useInfiniteQuery<Repository[]>(
+  } = useInfiniteQuery<Repository[], Error>(
     ['searchedRepos', searchQuery],
     ({ pageParam = 1 }) => (searchQuery ? searchRepos(searchQuery, pageParam) : []),
     {
@@ -26,7 +27,7 @@ export default function useReposQuery() {
       },
       retry: 1,
       refetchOnWindowFocus: false,
-      keepPreviousData: true,
+
       getNextPageParam: (lastPage, allPages) => {
         return !lastPage || lastPage.length < ITEMS_PER_PAGE
           ? undefined
@@ -35,15 +36,13 @@ export default function useReposQuery() {
     },
   );
 
-  const searchedRepos: Repository[] | undefined =
-    data && data.pages ? data.pages.flat() : undefined;
-
   return {
     searchQuery,
     setSearchQuery,
-    searchedRepos,
+    data,
     fetchNextPage,
     isLoading,
+    isFetching,
     isFetchingNextPage,
     hasNextPage,
     isError,

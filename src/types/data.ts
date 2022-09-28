@@ -1,3 +1,5 @@
+import { IssueOpenOrClosedState } from './states';
+
 export type IncomingIssueData = {
   id: number;
   number: number;
@@ -30,9 +32,6 @@ export type Issue = {
   html_url: string;
 };
 export type Issues = { [id: string]: Issue[] | [] };
-
-export const ISSUE_STATE = { OPEN: 'open', CLOSED: 'closed' } as const;
-export type IssueOpenOrClosedState = typeof ISSUE_STATE[keyof typeof ISSUE_STATE];
 
 export type IncomingRepositoryData = {
   id: number;
