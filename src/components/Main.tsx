@@ -11,5 +11,5 @@ const Container = styled.main`
   flex-direction: column;
   justify-content: stretch;
   height: calc(100% - 6rem);
-  background-color: ${theme.backgroundColor};
+  background-color: ${theme.primaryBackgroundColor};
 `;

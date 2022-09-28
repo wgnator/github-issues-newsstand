@@ -3,7 +3,8 @@ export const theme = {
   primaryDarkColor: '#6a6fca',
   fontColor: '#242424',
   borderColor: '#242424',
-  backgroundColor: '#fffdf2',
+  primaryBackgroundColor: '#fffdf2',
+  secondaryBackgroundColor: '#ffffff',
   shadowColor: '#ebebeb',
   repoColor: [
     'rgb(198,135,143)',

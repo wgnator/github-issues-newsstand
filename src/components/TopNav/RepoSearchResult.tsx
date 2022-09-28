@@ -86,7 +86,7 @@ export default function RepoSearchResultDropdown({
         <SpinnerWrapper>
           <LoadingSpinner
             color={theme.primaryColor}
-            backgroundColor={theme.backgroundColor}
+            backgroundColor={theme.secondaryBackgroundColor}
           />
         </SpinnerWrapper>
       ) : (
@@ -117,8 +117,9 @@ const Container = styled.ul`
   overflow-y: auto;
   overflow-x: hidden;
   color: ${theme.fontColor};
-  background-color: white;
+  background-color: ${theme.secondaryBackgroundColor};
   z-index: 10;
+
   li {
     border-bottom: 1px solid ${theme.primaryColor};
   }
@@ -176,7 +177,7 @@ const CloseButtonWrapper = styled.div`
 const CloseButton = styled((props) => Button({ ...props, color: theme.primaryColor }))`
   height: 1.5rem;
   font-size: 0.7rem;
-  background-color: white;
+  background-color: ${theme.secondaryBackgroundColor};
 `;
 
 const CloseIcon = styled(MdClose)``;

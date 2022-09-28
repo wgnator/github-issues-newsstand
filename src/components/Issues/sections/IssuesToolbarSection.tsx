@@ -1,9 +1,9 @@
 import { Dispatch } from 'react';
 import styled from 'styled-components';
-import { ISSUE_STATE } from '../../consts/consts';
-import { theme } from '../../styles/theme';
-import { IssueOpenOrClosedState } from '../../types/states';
-import { IssueOptions } from './IssuesBox';
+import { ISSUE_STATE } from '../../../consts/consts';
+import { theme } from '../../../styles/theme';
+import { IssueOpenOrClosedState } from '../../../types/states';
+import { IssueOptions } from './../IssuesBox';
 
 export default function IssuesToolbarSection({
   optionsState,
@@ -50,7 +50,7 @@ const Container = styled.section`
 const ChooseStateButtons = styled.div`
   display: inline;
   width: 10rem;
-  height: 1.5rem;
+  height: 1.3rem;
   border: 1px solid ${theme.borderColor};
   border-radius: 10px;
   display: flex;

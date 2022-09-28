@@ -44,7 +44,6 @@ export default function IssueItem({
           <Title>
             <Dummy />
           </Title>
-
           <IssueLabel>
             <Dummy />
           </IssueLabel>
