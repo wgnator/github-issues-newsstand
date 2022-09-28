@@ -79,18 +79,19 @@ const ErrorMessage = styled.div`
   align-items: center;
 `;
 const Container = styled.div<{ isExpanded?: boolean; viewMode?: ViewMode }>`
-  width: 100%;
   overflow: hidden;
   transition: height 0.3s linear;
 
   @media (min-width: ${MOBILE_WIDTH}px) {
+    width: 49%;
     height: ${(props) =>
       props.viewMode === VIEW_MODE.MULTIPLE
-        ? 'calc((100vh - 10rem) / 2)'
-        : 'calc(100vh - 10rem)'};
+        ? 'calc((100vh - 9rem) / 2)'
+        : 'calc(100vh - 9rem)'};
   }
 
   @media (max-width: ${MOBILE_WIDTH}px) {
+    width: 100%;
     height: ${(props) =>
       props.viewMode === VIEW_MODE.MULTIPLE
         ? props.isExpanded
@@ -119,9 +120,10 @@ const SubContainer = styled.div<{ isExpanded: boolean; index: number }>`
       props.isExpanded &&
       `
       position: absolute;
+
       z-index: 10;
       background-color: ${theme.primaryBackgroundColor};
-      ${props.index === 0 || props.index === 2 ? 'left: 0; ' : 'right: 0;'}
+      ${props.index === 0 || props.index === 2 ? 'left: 1rem; ' : 'right: 1rem;'}
       ${props.index === 0 || props.index === 1 ? 'top: 1rem; ' : 'bottom: 1rem;'}
       animation: expand 0.2s linear forwards;`}
 
@@ -131,7 +133,7 @@ const SubContainer = styled.div<{ isExpanded: boolean; index: number }>`
         height: 49%;
       }
       100% {
-        width: 100%;
+        width: calc(100% - 2rem);
         height: calc(100% - 2rem);
       }
     }

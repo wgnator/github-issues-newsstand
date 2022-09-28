@@ -50,7 +50,7 @@ const Container = styled.section`
 const ChooseStateButtons = styled.div`
   display: inline;
   width: 10rem;
-  height: 1.5rem;
+  height: 1.3rem;
   border: 1px solid ${theme.borderColor};
   border-radius: 10px;
   display: flex;

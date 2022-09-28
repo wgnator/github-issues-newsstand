@@ -57,25 +57,30 @@ export default function IssuesPage() {
 }
 
 const Container = styled.div<{ viewMode: ViewMode }>`
-  width: 96%;
+  width: 100%;
+  padding: 1rem;
   min-height: calc(100vh - 6rem);
   margin: auto;
   position: relative;
   background-color: ${theme.primaryBackgroundColor};
   justify-content: space-between;
   align-items: stretch;
-  gap: 1rem;
 
+  > *:nth-child(3) {
+    align-self: flex-end;
+  }
+  > *:nth-child(4) {
+    align-self: flex-end;
+  }
   @media (min-width: ${MOBILE_WIDTH}px) {
-    display: ${(props) => (props.viewMode === VIEW_MODE.MULTIPLE ? 'grid' : 'block')};
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
-    padding: 1rem 0;
+    display: flex;
+    flex-wrap: wrap;
   }
 
   @media (max-width: ${MOBILE_WIDTH}px) {
     display: flex;
     flex-direction: column;
+    gap: 1rem;
   }
 `;
 
