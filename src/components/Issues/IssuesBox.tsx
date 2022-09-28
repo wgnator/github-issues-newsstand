@@ -1,12 +1,13 @@
 import styled from 'styled-components';
 import { theme } from '../../styles/theme';
-import { IssueOpenOrClosedState, ISSUE_STATE } from '../../types/data';
 import { useState } from 'react';
 import useIssuesQuery from '../../fetch_modules/issues/useIssuesQuery';
 import { BsArrowsAngleExpand } from 'react-icons/bs';
 import IssuesToolbarSection from './IssuesToolbarSection';
 import IssuesSection from './IssuesSection';
 import PageNavSection from './PageNavSection';
+import { ISSUE_STATE, MOBILE_WIDTH, VIEW_MODE } from '../../consts/consts';
+import { IssueOpenOrClosedState, ViewMode } from '../../types/states';
 
 export type IssueOptions = {
   openOrClosed: IssueOpenOrClosedState;
@@ -15,12 +16,14 @@ export type IssueOptions = {
 
 export default function IssuesBox({
   repoName,
-  expanded,
+  isExpanded,
+  viewMode,
   repoIndex,
   onExpandCallback,
 }: {
   repoName: string | undefined;
-  expanded: boolean;
+  isExpanded: boolean;
+  viewMode: ViewMode;
   repoIndex: number;
   onExpandCallback?: () => void;
 }) {
@@ -48,8 +51,8 @@ export default function IssuesBox({
       <ErrorMessage>데이터를 가져오는데 문제가 있습니다.</ErrorMessage>
     </Container>
   ) : (
-    <Container>
-      <SubContainer expanded={expanded} index={repoIndex}>
+    <Container isExpanded={isExpanded} viewMode={viewMode}>
+      <SubContainer isExpanded={isExpanded} index={repoIndex}>
         <TitleSection color={theme.repoColor[repoIndex]}>
           <RepoTitle>{repoName}</RepoTitle>
           {onExpandCallback && (
@@ -80,12 +83,29 @@ const ErrorMessage = styled.div`
   justify-content: center;
   align-items: center;
 `;
-const Container = styled.div`
+const Container = styled.div<{ isExpanded?: boolean; viewMode?: ViewMode }>`
   width: 100%;
   overflow: hidden;
+  transition: height 0.3s linear;
+
+  @media (min-width: ${MOBILE_WIDTH}px) {
+    height: ${(props) =>
+      props.viewMode === VIEW_MODE.MULTIPLE
+        ? 'calc((100vh - 10rem) / 2)'
+        : 'calc(100vh - 10rem)'};
+  }
+
+  @media (max-width: ${MOBILE_WIDTH}px) {
+    height: ${(props) =>
+      props.viewMode === VIEW_MODE.MULTIPLE
+        ? props.isExpanded
+          ? '80vh'
+          : '40vh'
+        : '100%'};
+  }
 `;
 
-const SubContainer = styled.div<{ expanded: boolean; index: number }>`
+const SubContainer = styled.div<{ isExpanded: boolean; index: number }>`
   border: 1px solid ${theme.borderColor};
   border-radius: 5px;
   width: 100%;
@@ -98,31 +118,35 @@ const SubContainer = styled.div<{ expanded: boolean; index: number }>`
   > *:last-child {
     border-bottom: none;
   }
-  ${(props) =>
-    props.expanded &&
-    `
-    position: absolute;
-    z-index: 10;
-    background-color: ${theme.backgroundColor};
-    ${props.index === 0 || props.index === 2 ? 'left: 0; ' : 'right: 0;'}
-    ${props.index === 0 || props.index === 1 ? 'top: 0; ' : 'bottom: 0;'}
-    animation: expand 0.2s linear forwards;
-  `}
-  @keyframes expand {
-    0% {
-      width: 49%;
-      height: 49%;
-    }
-    100% {
-      width: 100%;
-      height: 100%;
+
+  @media (min-width: ${MOBILE_WIDTH}px) {
+    ${(props) =>
+      props.isExpanded &&
+      `
+      position: absolute;
+      z-index: 10;
+      background-color: ${theme.backgroundColor};
+      ${props.index === 0 || props.index === 2 ? 'left: 0; ' : 'right: 0;'}
+      ${props.index === 0 || props.index === 1 ? 'top: 0; ' : 'bottom: 0;'}
+      animation: expand 0.2s linear forwards;`}
+
+    @keyframes expand {
+      0% {
+        width: 49%;
+        height: 49%;
+      }
+      100% {
+        width: 100%;
+        height: 100%;
+      }
     }
   }
 `;
 
 const TitleSection = styled.section`
   width: 100%;
-  height: 2rem;
+  min-height: 1.4375rem;
+  height: 1.4375rem;
   padding: 0 0.5rem;
   display: flex;
   justify-content: space-between;

@@ -1,19 +1,21 @@
 import styled from 'styled-components';
 import { AiOutlineSearch } from 'react-icons/ai';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { MdCancel } from 'react-icons/md';
-import Button from './Button';
+import Button from '../UI_common/Button';
 import { theme } from '../../styles/theme';
 
 const SearchInputBox = ({
-  handleOnSearch,
-  handleOnSubmit,
-  handleOnFocus,
+  handleOnSearchFromParent,
+  handleOnChangeFromParent,
+  handleOnSubmitFromParent,
+  handleOnFocusFromParent,
   placeholder,
 }: {
-  handleOnSearch: (searchString: string) => void;
-  handleOnSubmit: (searchString: string) => void;
-  handleOnFocus: () => void;
+  handleOnSearchFromParent: (searchString: string) => void;
+  handleOnChangeFromParent: (searchString: string) => void;
+  handleOnSubmitFromParent: (searchString: string) => void;
+  handleOnFocusFromParent: () => void;
   placeholder: string;
 }) => {
   const [searchString, setSearchString] = useState('');
@@ -21,25 +23,33 @@ const SearchInputBox = ({
   const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchString(event.target.value);
   };
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (isAutoSearchOn) handleOnSearch(searchString);
+    if (isAutoSearchOn) handleOnSearchFromParent(searchString);
+    handleOnChangeFromParent(searchString);
   }, [searchString]);
 
   return (
     <InputBox onSubmit={(event) => event.preventDefault()}>
       <InputWrapper>
         <SearchInput
+          ref={inputRef}
           type="text"
           id="search_string"
           placeholder={placeholder}
+          autoComplete="off"
           value={searchString}
           onChange={handleOnChange}
-          onFocus={handleOnFocus}
+          onFocus={handleOnFocusFromParent}
         />
         {searchString && (
           <IconWrapper>
-            <CancelIcon onClick={() => setSearchString('')} />
+            <CancelIcon
+              onClick={() => {
+                setSearchString('');
+              }}
+            />
           </IconWrapper>
         )}
         <AutoSearchToggleButton
@@ -53,7 +63,7 @@ const SearchInputBox = ({
       <SubmitSearch
         type="submit"
         onClick={() => {
-          handleOnSubmit(searchString);
+          handleOnSubmitFromParent(searchString);
         }}
       >
         <AiOutlineSearch />
@@ -67,11 +77,12 @@ const InputBox = styled.form`
   height: 100%;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 0.5rem;
 `;
 
 const InputWrapper = styled.div`
-  width: 80%;
+  width: 100%;
   height: 100%;
   border: 1px solid white;
   border-radius: 5px;
@@ -88,7 +99,7 @@ const SearchInput = styled.input`
 `;
 
 const IconWrapper = styled.div`
-  width: 1rem;
+  width: 1.3rem;
   display: flex;
   align-items: center;
   margin-right: 0.5rem;

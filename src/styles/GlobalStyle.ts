@@ -61,7 +61,7 @@ footer, header, hgroup, menu, nav, section {
 }
 body {
     line-height: 1;
-    height: 100vh;
+    min-height: 100vh;
 }
 #root {
   height: 100%;
@@ -100,7 +100,7 @@ textarea {
   font-family: inherit;
 }
 ::-webkit-scrollbar {
-  width: 12px;  
+  width: 0.5rem;  
 }
 ::-webkit-scrollbar-track {
   background: rgba(0,0,0,0.3);
@@ -110,11 +110,8 @@ textarea {
   background-color: rgba(0,0,0,0.5);   
   border-radius: 5px;
 }
-@media (max-width: 720px) {
-    button {
-      padding: 0.5rem;
-    }
-}
+
+
 
 @-webkit-keyframes skeleton-gradient {
     0% {
