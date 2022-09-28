@@ -122,7 +122,7 @@ const SubContainer = styled.div<{ isExpanded: boolean; index: number }>`
       z-index: 10;
       background-color: ${theme.primaryBackgroundColor};
       ${props.index === 0 || props.index === 2 ? 'left: 0; ' : 'right: 0;'}
-      ${props.index === 0 || props.index === 1 ? 'top: 0; ' : 'bottom: 0;'}
+      ${props.index === 0 || props.index === 1 ? 'top: 1rem; ' : 'bottom: 1rem;'}
       animation: expand 0.2s linear forwards;`}
 
     @keyframes expand {
@@ -132,7 +132,7 @@ const SubContainer = styled.div<{ isExpanded: boolean; index: number }>`
       }
       100% {
         width: 100%;
-        height: 100%;
+        height: calc(100% - 2rem);
       }
     }
   }
