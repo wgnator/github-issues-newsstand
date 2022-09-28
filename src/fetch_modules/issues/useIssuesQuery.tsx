@@ -11,12 +11,12 @@ export default function useIssuesQuery(repoName: string, selectedOptions: IssueO
   const { getIssuesByRepoName } = useIssuesRequest();
   const queryClient = useQueryClient();
 
-  const { isLoading, isError, error, data } = useQuery(
+  const { isLoading, isFetching, isError, data } = useQuery(
     ['issues', repoName, openOrClosed, page],
     () => getIssuesByRepoName(repoName, openOrClosed, page),
     {
-      staleTime: Infinity,
       retry: 1,
+      staleTime: 60 * 1000,
       refetchOnWindowFocus: false,
     },
   );
@@ -34,8 +34,8 @@ export default function useIssuesQuery(repoName: string, selectedOptions: IssueO
 
   return {
     isLoading,
+    isFetching,
     isError,
-    error,
     data,
     hasNextPage,
   };

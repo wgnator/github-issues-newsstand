@@ -4,14 +4,14 @@ import TopNav from './TopNav/TopNav';
 import RepositoriesNav from './RepositoriesNav';
 import { RecoilRoot } from 'recoil';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+// import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 export default function Layout() {
   const queryClient = new QueryClient();
   return (
     <RecoilRoot>
       <QueryClientProvider client={queryClient}>
-        <ReactQueryDevtools />
+        {/* <ReactQueryDevtools /> */}
         <TopNav />
         <RepositoriesNav />
         <Main>

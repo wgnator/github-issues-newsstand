@@ -16,7 +16,7 @@ export default function IssuesPage() {
   const [expandedRepoId, setExpandedRepoId] = useState<null | number>();
   const viewMode = !!selectedRepoId ? VIEW_MODE.SINGLE : VIEW_MODE.MULTIPLE;
 
-  return (
+  return savedRepos.length > 0 ? (
     <Container viewMode={viewMode}>
       {viewMode === VIEW_MODE.SINGLE
         ? selectedRepoId && (
@@ -42,27 +42,42 @@ export default function IssuesPage() {
             />
           ))}
     </Container>
+  ) : (
+    <NoRepositories>
+      {' '}
+      <h2>Search &#38; Add Repositories</h2>
+    </NoRepositories>
   );
 }
 
 const Container = styled.div<{ viewMode: ViewMode }>`
   width: 96%;
   min-height: calc(100vh - 6rem);
-  height: fit-content;
-  margin: 2%;
+  margin: auto;
   position: relative;
-  background-color: ${theme.backgroundColor};
+  background-color: ${theme.primaryBackgroundColor};
   justify-content: space-between;
+  align-items: center;
   gap: 1rem;
 
   @media (min-width: ${MOBILE_WIDTH}px) {
     display: ${(props) => (props.viewMode === VIEW_MODE.MULTIPLE ? 'grid' : 'block')};
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr;
+    padding: 1rem 0;
   }
 
   @media (max-width: ${MOBILE_WIDTH}px) {
     display: flex;
     flex-direction: column;
   }
+`;
+
+const NoRepositories = styled.div`
+  width: 100%;
+  height: calc(100vh - 6rem);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0.5;
 `;

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import Button from '../UI_common/Button';
+import Button from '../../UI_common/Button';
 
 export default function PageNavSection({
   page,

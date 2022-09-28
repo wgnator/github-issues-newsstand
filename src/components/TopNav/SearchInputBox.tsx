@@ -86,7 +86,7 @@ const InputWrapper = styled.div`
   height: 100%;
   border: 1px solid white;
   border-radius: 5px;
-  background-color: white;
+  background-color: ${theme.secondaryBackgroundColor};
   display: flex;
   align-items: center;
   padding: 0 0.3rem;

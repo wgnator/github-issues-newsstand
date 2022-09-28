@@ -64,7 +64,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
-  background-color: ${theme.backgroundColor};
+  background-color: ${theme.primaryBackgroundColor};
   border: 1px solid ${theme.borderColor};
   border-radius: 10px;
   margin: auto;

@@ -1,11 +1,11 @@
 import styled from 'styled-components';
+import useIssuesQuery from '../../fetch_modules/issues/useIssuesQuery';
+import IssuesSection from './sections/IssuesSection';
+import IssuesToolbarSection from './sections/IssuesToolbarSection';
+import PageNavSection from './sections/PageNavSection';
 import { theme } from '../../styles/theme';
 import { useState } from 'react';
-import useIssuesQuery from '../../fetch_modules/issues/useIssuesQuery';
 import { BsArrowsAngleExpand } from 'react-icons/bs';
-import IssuesToolbarSection from './IssuesToolbarSection';
-import IssuesSection from './IssuesSection';
-import PageNavSection from './PageNavSection';
 import { ISSUE_STATE, MOBILE_WIDTH, VIEW_MODE } from '../../consts/consts';
 import { IssueOpenOrClosedState, ViewMode } from '../../types/states';
 
@@ -39,12 +39,7 @@ export default function IssuesBox({
     page: 1,
   });
 
-  const {
-    isLoading,
-    isError,
-    data: issues,
-    hasNextPage,
-  } = useIssuesQuery(repoName, optionsState);
+  const { hasNextPage, isError, ...queryState } = useIssuesQuery(repoName, optionsState);
 
   return isError ? (
     <Container>
@@ -65,7 +60,7 @@ export default function IssuesBox({
           optionsState={optionsState}
           setOptionsState={setOptionsState}
         />
-        {issues && <IssuesSection issues={issues} isLoading={isLoading} />}
+        {queryState.data && <IssuesSection viewMode={viewMode} queryState={queryState} />}
         <PageNavSection
           page={optionsState.page}
           hasNextPage={hasNextPage}
@@ -125,7 +120,7 @@ const SubContainer = styled.div<{ isExpanded: boolean; index: number }>`
       `
       position: absolute;
       z-index: 10;
-      background-color: ${theme.backgroundColor};
+      background-color: ${theme.primaryBackgroundColor};
       ${props.index === 0 || props.index === 2 ? 'left: 0; ' : 'right: 0;'}
       ${props.index === 0 || props.index === 1 ? 'top: 0; ' : 'bottom: 0;'}
       animation: expand 0.2s linear forwards;`}
