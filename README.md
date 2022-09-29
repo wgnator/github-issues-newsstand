@@ -9,6 +9,7 @@ cd github-issues-newsstand
 npm install
 npm run dev
 ```
+http://localhost:5173 접속
 
 # At a glance / 미리보기
 
