@@ -39,13 +39,9 @@ export default function IssuesBox({
     page: 1,
   });
 
-  const { hasNextPage, isError, ...queryState } = useIssuesQuery(repoName, optionsState);
+  const { hasNextPage, ...queryState } = useIssuesQuery(repoName, optionsState);
 
-  return isError ? (
-    <Container>
-      <ErrorMessage>데이터를 가져오는데 문제가 있습니다.</ErrorMessage>
-    </Container>
-  ) : (
+  return (
     <Container isExpanded={isExpanded} viewMode={viewMode}>
       <SubContainer isExpanded={isExpanded} index={repoIndex}>
         <TitleSection color={theme.repoColor[repoIndex]}>
@@ -60,7 +56,9 @@ export default function IssuesBox({
           optionsState={optionsState}
           setOptionsState={setOptionsState}
         />
-        {queryState.data && <IssuesSection viewMode={viewMode} queryState={queryState} />}
+
+        <IssuesSection viewMode={viewMode} queryState={queryState} />
+
         <PageNavSection
           page={optionsState.page}
           hasNextPage={hasNextPage}
@@ -104,6 +102,7 @@ const Container = styled.div<{ isExpanded?: boolean; viewMode?: ViewMode }>`
 const SubContainer = styled.div<{ isExpanded: boolean; index: number }>`
   border: 1px solid ${theme.borderColor};
   border-radius: 5px;
+  overflow: hidden;
   width: 100%;
   height: 100%;
   display: flex;

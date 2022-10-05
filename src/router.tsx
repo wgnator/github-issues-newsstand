@@ -1,7 +1,7 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Layout from "./components/Layout";
-import IssuesPage from "./pages/IssuesPage";
-import { PageNotFound } from "./pages/PageNotFound";
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Layout from './components/Layout';
+import IssuesPage from './pages/IssuesPage';
+import { PageNotFound } from './pages/PageNotFound';
 
 export default function Router() {
   return (

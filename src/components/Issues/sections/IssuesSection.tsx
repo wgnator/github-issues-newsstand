@@ -14,10 +14,11 @@ export default function IssuesSection({
     data: Issue[] | undefined;
     isLoading: boolean;
     isFetching: boolean;
+    isError: boolean;
   };
   viewMode: ViewMode;
 }) {
-  const { data: issues, isLoading, isFetching } = queryState;
+  const { data: issues, isLoading, isFetching, isError } = queryState;
   const containerRef = useRef<HTMLTableSectionElement>(null);
 
   useEffect(() => {
@@ -27,14 +28,26 @@ export default function IssuesSection({
 
   return (
     <Container ref={containerRef}>
-      <IssuesContainer>
-        {(isLoading || isFetching) &&
-          new Array(5).fill(null).map((_, index) => <IssueItem key={index} />)}
-        {issues &&
-          !isLoading &&
-          !isFetching &&
-          issues.map((issue) => <IssueItem key={issue.id} data={issue} />)}
-      </IssuesContainer>
+      {(isLoading || isFetching) && (
+        <IssuesContainer>
+          {new Array(5).fill(null).map((_, index) => (
+            <IssueItem key={index} />
+          ))}
+        </IssuesContainer>
+      )}
+      {issues &&
+        !isLoading &&
+        !isFetching &&
+        (issues.length > 0 ? (
+          <IssuesContainer>
+            {issues.map((issue) => (
+              <IssueItem key={issue.id} data={issue} />
+            ))}
+          </IssuesContainer>
+        ) : (
+          <NoIssues>No Issues</NoIssues>
+        ))}
+      {isError && <NoIssues>데이터를 가져오는데 문제가 있습니다.</NoIssues>}
     </Container>
   );
 }
@@ -57,4 +70,12 @@ const IssuesContainer = styled.div`
   > *:last-child {
     border-bottom: none;
   }
+`;
+
+const NoIssues = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
