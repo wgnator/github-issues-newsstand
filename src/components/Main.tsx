@@ -1,14 +1,9 @@
-import { ReactNode, Suspense } from 'react';
+import { ReactNode } from 'react';
 import styled from 'styled-components';
-import { LoadingPage } from '../pages/LoadingPage';
 import { theme } from '../styles/theme';
 
 export default function Main({ children }: { children: ReactNode }) {
-  return (
-    <Suspense fallback={<LoadingPage />}>
-      <Container>{children}</Container>
-    </Suspense>
-  );
+  return <Container>{children}</Container>;
 }
 
 const Container = styled.main`
