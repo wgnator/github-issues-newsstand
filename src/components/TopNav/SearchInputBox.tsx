@@ -20,10 +20,13 @@ const SearchInputBox = ({
 }) => {
   const [searchString, setSearchString] = useState('');
   const [isAutoSearchOn, setIsAutoSearchOn] = useState(false);
-  const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchString(event.target.value);
-  };
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) =>
+    setSearchString(event.target.value);
+  const toggleAutoSearch = () => setIsAutoSearchOn((prevState) => !prevState);
+  const clearSearch = () => setSearchString('');
+  const handleOnSubmit = () => handleOnSubmitFromParent(searchString);
 
   useEffect(() => {
     if (isAutoSearchOn) handleOnSearchFromParent(searchString);
@@ -45,27 +48,14 @@ const SearchInputBox = ({
         />
         {searchString && (
           <IconWrapper>
-            <CancelIcon
-              onClick={() => {
-                setSearchString('');
-              }}
-            />
+            <CancelIcon onClick={clearSearch} />
           </IconWrapper>
         )}
-        <AutoSearchToggleButton
-          type="button"
-          isOn={isAutoSearchOn}
-          onClick={() => setIsAutoSearchOn(!isAutoSearchOn)}
-        >
+        <AutoSearchToggleButton type="button" isOn={isAutoSearchOn} onClick={toggleAutoSearch}>
           자동검색 {isAutoSearchOn ? 'ON' : 'OFF'}
         </AutoSearchToggleButton>
       </InputWrapper>
-      <SubmitSearch
-        type="submit"
-        onClick={() => {
-          handleOnSubmitFromParent(searchString);
-        }}
-      >
+      <SubmitSearch type="submit" onClick={handleOnSubmit} title="submit search">
         <AiOutlineSearch />
       </SubmitSearch>
     </InputBox>

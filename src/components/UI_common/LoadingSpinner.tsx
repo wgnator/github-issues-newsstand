@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export default function LoadingSpinner({
   color,
@@ -54,6 +54,4 @@ const Triangle = styled.div<{ backgroundColor: string }>`
   border-left: 2rem solid transparent;
   border-right: 2rem solid transparent;
   position: absolute;
-
-  /* transform: rotate(45deg) skew(0deg, 349deg); */
 `;

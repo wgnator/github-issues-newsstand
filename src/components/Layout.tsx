@@ -3,6 +3,7 @@ import { RecoilRoot } from 'recoil';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { lazy, Suspense } from 'react';
 import { LoadingPage } from '../pages/LoadingPage';
+import { Toaster } from 'react-hot-toast';
 // import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 const TopNav = lazy(() => import('./TopNav/TopNav'));
@@ -21,6 +22,7 @@ export default function Layout() {
           <Main>
             <Outlet />
           </Main>
+          <Toaster />
         </QueryClientProvider>
       </RecoilRoot>
     </Suspense>

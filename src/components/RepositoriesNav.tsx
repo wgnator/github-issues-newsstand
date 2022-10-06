@@ -10,32 +10,39 @@ import { MOBILE_WIDTH } from '../consts/consts';
 export default function RepositoriesNav() {
   const [savedRepos, setSavedRepos] = useRecoilState(saveReposState);
   const navigate = useNavigate();
+
+  const navigateToSingleRepoPage = (repoId: number) => navigate(`/${repoId}`);
+  const navigateToShowAllPage = () => navigate(`/`);
+  const removeRepo = (repoIdToRemove: number) => {
+    setSavedRepos(savedRepos.filter((repo) => repo.id !== repoIdToRemove));
+    navigateToShowAllPage();
+  };
+
   return (
     <Container>
       {savedRepos.map((repo, index) => (
         <Item
           key={repo.id}
           color={theme.repoColor[index]}
-          onClick={() => {
-            navigate(`/${repo.id}`);
-          }}
+          onClick={() => navigateToSingleRepoPage(repo.id)}
         >
           <RepoName>{repo.fullName}</RepoName>
           <RemoveIcon
             onClick={(event) => {
               event.stopPropagation();
-              setSavedRepos(savedRepos.filter((_repo) => _repo.id !== repo.id));
-              navigate('/');
+              removeRepo(repo.id);
             }}
           />
         </Item>
       ))}
-      <ShowAllButton onClick={() => navigate(`/`)} />
+      <ButtonWrapper>
+        <ShowAllButton onClick={navigateToShowAllPage} title="show all button" />
+      </ButtonWrapper>
     </Container>
   );
 }
 
-const Container = styled.nav`
+const Container = styled.ul`
   height: 3rem;
   width: 100%;
   justify-content: flex-start;
@@ -44,9 +51,13 @@ const Container = styled.nav`
   gap: 1rem;
 `;
 
-const ShowAllButton = styled(Button)`
+const ButtonWrapper = styled.li`
   width: 18%;
   margin-left: auto;
+`;
+const ShowAllButton = styled(Button)`
+  width: 100%;
+  height: 100%;
   &::before {
     content: 'Show All';
   }
@@ -73,11 +84,15 @@ const Item = styled.li<{ color: string }>`
 `;
 const RepoName = styled.div`
   width: 100%;
+  height: 100%;
+  line-height: 1.5;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
   @media (max-width: ${MOBILE_WIDTH}px) {
     text-overflow: inherit;
+    display: flex;
+    align-items: center;
   }
 `;
 

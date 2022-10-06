@@ -1,6 +1,9 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
 import { useState } from 'react';
+import toast from 'react-hot-toast';
 import { ITEMS_PER_PAGE } from '../../consts/consts';
+import { ERROR_MESSAGE } from '../../consts/errors';
 import { Repository } from '../../types/data';
 import useReposRequest from './useReposRequest';
 
@@ -16,7 +19,7 @@ export default function useReposQuery() {
     isError,
     error,
     data,
-  } = useInfiniteQuery<Repository[], Error>(
+  } = useInfiniteQuery<Repository[], AxiosError>(
     ['searchedRepos', searchQuery],
     ({ pageParam = 1 }) => (searchQuery ? searchRepos(searchQuery, pageParam) : []),
     {
@@ -25,13 +28,13 @@ export default function useReposQuery() {
         pageParams: [undefined],
         pages: [],
       },
-      retry: 1,
+      retry: (failureCount, error) =>
+        !(error.message === ERROR_MESSAGE.API_REQUEST_LIMIT_EXCEEDED || failureCount > 1),
       refetchOnWindowFocus: false,
-
+      onError: (error) =>
+        toast.error('Repository search failed: ' + error.message, { duration: 3000 }),
       getNextPageParam: (lastPage, allPages) => {
-        return !lastPage || lastPage.length < ITEMS_PER_PAGE
-          ? undefined
-          : allPages.length + 1;
+        return !lastPage || lastPage.length < ITEMS_PER_PAGE ? undefined : allPages.length + 1;
       },
     },
   );

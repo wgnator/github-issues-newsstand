@@ -62,7 +62,9 @@ export default function IssuesBox({
         <PageNavSection
           page={optionsState.page}
           hasNextPage={hasNextPage}
-          setPage={(page) => setOptionsState({ ...optionsState, page: page })}
+          setPage={(page) =>
+            setOptionsState((prevState) => ({ ...prevState, page: page }))
+          }
         />
       </SubContainer>
     </Container>

@@ -1,13 +1,12 @@
 import styled from 'styled-components';
 import { Repository } from '../../types/data';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { saveReposState } from '../../atoms/reposState';
 import useIntersectionObserver from '../../UI_hooks/useIntersectionObserver';
 import LoadingSpinner from '../UI_common/LoadingSpinner';
 import { theme } from '../../styles/theme';
 import AlertDialog from '../UI_common/AlertDialog';
-import toast, { Toaster } from 'react-hot-toast';
 import { InfiniteData } from '@tanstack/react-query';
 import { MOBILE_WIDTH } from '../../consts/consts';
 import RepoItem from './RepoItem';
@@ -33,8 +32,7 @@ export default function RepoSearchResultDropdown({
   fetchState,
   close,
 }: RepoSearchResultDropdownProps) {
-  const { fetchNextPage, isLoading, isFetching, isFetchingNextPage, hasNextPage, error } =
-    fetchState;
+  const { fetchNextPage, isLoading, isFetching, isFetchingNextPage, hasNextPage } = fetchState;
   const bottomDetectorRef = useRef(null);
   const rootRef = useRef(null);
   const [savedRepos, setSavedRepos] = useRecoilState(saveReposState);
@@ -51,8 +49,11 @@ export default function RepoSearchResultDropdown({
       });
   };
 
+  const onAlertDialogConfirm = (isConfirmed: boolean) =>
+    isConfirmed && setAlert({ isShowing: false, message: '' });
+
   const flattenPage = (data: undefined | InfiniteData<Repository[]>) =>
-    data && data.pages ? data.pages.flat() : undefined;
+    data && data.pages ? data.pages.flat() : null;
 
   const flattenedPage = flattenPage(repos);
 
@@ -65,10 +66,6 @@ export default function RepoSearchResultDropdown({
     [repos],
   );
 
-  useEffect(() => {
-    if (error) toast.error(error.message, { duration: 2000 });
-  }, [error]);
-
   return (
     <Container ref={rootRef}>
       <CloseButtonWrapper>
@@ -77,11 +74,8 @@ export default function RepoSearchResultDropdown({
           <CloseIcon />
         </CloseButton>
       </CloseButtonWrapper>
-      <Toaster />
       {repos && flattenedPage && flattenedPage.length > 0 ? (
-        flattenedPage.map((repo) => (
-          <RepoItem key={repo.id} repo={repo} saveRepo={saveRepo} />
-        ))
+        flattenedPage.map((repo) => <RepoItem key={repo.id} repo={repo} saveRepo={saveRepo} />)
       ) : isLoading || isFetching ? (
         <SpinnerWrapper>
           <LoadingSpinner
@@ -96,13 +90,7 @@ export default function RepoSearchResultDropdown({
 
       {isFetchingNextPage && <Loading>Loading...</Loading>}
       {alert.isShowing && (
-        <AlertDialog
-          onConfirm={(isConfirmed) =>
-            isConfirmed && setAlert({ isShowing: false, message: '' })
-          }
-        >
-          {alert.message}
-        </AlertDialog>
+        <AlertDialog onConfirm={onAlertDialogConfirm}>{alert.message}</AlertDialog>
       )}
     </Container>
   );
