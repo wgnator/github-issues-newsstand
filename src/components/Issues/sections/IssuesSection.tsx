@@ -58,7 +58,7 @@ const Container = styled.section`
   overflow: auto;
 `;
 
-const IssuesContainer = styled.div`
+const IssuesContainer = styled.ul`
   width: 100%;
   margin: auto;
 

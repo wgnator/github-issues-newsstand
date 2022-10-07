@@ -7,18 +7,19 @@ export default function PageNavSection({
   setPage,
 }: {
   page: number;
-  hasNextPage: boolean;
+  hasNextPage: boolean | 'pending';
   setPage: (page: number) => void;
 }) {
   return (
     <Container>
-      {page > 1 && (
-        <PrevButton onClick={() => setPage(page - 1)}>&lt; Previous Page</PrevButton>
-      )}
+      {page > 1 && <PrevButton onClick={() => setPage(page - 1)}>&lt; Previous Page</PrevButton>}
       Page {page}
-      {hasNextPage && (
-        <NextButton onClick={() => setPage(page + 1)}>Next Page &gt;</NextButton>
-      )}
+      {hasNextPage &&
+        (hasNextPage === true ? (
+          <NextButton onClick={() => setPage(page + 1)}>Next Page &gt;</NextButton>
+        ) : (
+          <LoadingText>Loading...</LoadingText>
+        ))}
     </Container>
   );
 }
@@ -31,13 +32,17 @@ const Container = styled.div`
   align-items: center;
   padding: 0.5rem 2rem;
 `;
-
 const PrevButton = styled(Button)`
   position: absolute;
   left: 1rem;
   font-size: 0.8rem;
 `;
 const NextButton = styled(Button)`
+  position: absolute;
+  right: 1rem;
+  font-size: 0.8rem;
+`;
+const LoadingText = styled.div`
   position: absolute;
   right: 1rem;
   font-size: 0.8rem;

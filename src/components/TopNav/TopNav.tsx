@@ -20,6 +20,12 @@ export default function TopNav() {
     DEBOUNCER_DELAY_TIME,
   );
 
+  const onInputAutoSearch = (searchString: string) => setSearchWithDebouncer(searchString);
+  const onInputSubmit = (searchString: string) => setSearchQuery(encodeURIComponent(searchString));
+  const onInputFocus = () => setIsShowingSearchResult(true);
+  const onInputChange = (searchString: string) => setIsShowingSearchResult(!!searchString);
+  const onClose = () => setIsShowingSearchResult(false);
+
   useDetectOutsideClick([outsideClickRef], () => setIsShowingSearchResult(false));
 
   return (
@@ -28,24 +34,14 @@ export default function TopNav() {
       <Title onClick={() => navigate('/')}>Github Issues Newsstand</Title>
       <InputBoxWrapper ref={outsideClickRef}>
         <SearchInputBox
-          handleOnSearchFromParent={(searchString) =>
-            setSearchWithDebouncer(searchString)
-          }
-          handleOnSubmitFromParent={(searchString) =>
-            setSearchQuery(encodeURIComponent(searchString))
-          }
-          handleOnFocusFromParent={() => setIsShowingSearchResult(true)}
-          handleOnChangeFromParent={(searchString) =>
-            setIsShowingSearchResult(!!searchString)
-          }
+          handleOnSearchFromParent={onInputAutoSearch}
+          handleOnSubmitFromParent={onInputSubmit}
+          handleOnFocusFromParent={onInputFocus}
+          handleOnChangeFromParent={onInputChange}
           placeholder="Search Repositories"
         />
         {isShowingSearchResult && (
-          <RepoSearchResultDropdown
-            repos={repos}
-            fetchState={fetchState}
-            close={() => setIsShowingSearchResult(false)}
-          />
+          <RepoSearchResultDropdown repos={repos} fetchState={fetchState} close={onClose} />
         )}
       </InputBoxWrapper>
     </Container>
