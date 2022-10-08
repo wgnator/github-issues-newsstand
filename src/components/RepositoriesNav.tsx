@@ -10,7 +10,6 @@ import { MOBILE_WIDTH } from '../consts/consts';
 export default function RepositoriesNav() {
   const [savedRepos, setSavedRepos] = useRecoilState(saveReposState);
   const navigate = useNavigate();
-
   const navigateToSingleRepoPage = (repoId: number) => navigate(`/${repoId}`);
   const navigateToShowAllPage = () => navigate(`/`);
   const removeRepo = (repoIdToRemove: number) => {
@@ -35,8 +34,9 @@ export default function RepositoriesNav() {
           />
         </Item>
       ))}
+
       <ButtonWrapper>
-        <ShowAllButton onClick={navigateToShowAllPage} title="show all button" />
+        <ShowAllButton onClick={navigateToShowAllPage} />{' '}
       </ButtonWrapper>
     </Container>
   );
@@ -49,11 +49,19 @@ const Container = styled.ul`
   display: flex;
   padding: 0.5rem 1rem;
   gap: 1rem;
+  @media (max-width: ${MOBILE_WIDTH}px) {
+    padding: 0.3rem 0.5rem;
+    gap: 1%;
+  }
 `;
 
 const ButtonWrapper = styled.li`
   width: 18%;
   margin-left: auto;
+
+  @media (max-width: ${MOBILE_WIDTH}px) {
+    display: none;
+  }
 `;
 const ShowAllButton = styled(Button)`
   width: 100%;
@@ -77,9 +85,22 @@ const Item = styled.li<{ color: string }>`
   align-items: center;
   justify-content: space-between;
   padding: 0.2rem 0.5rem;
+  position: relative;
+
   @media (max-width: ${MOBILE_WIDTH}px) {
     padding: 0.2rem 0.2rem;
     font-size: 0.8rem;
+    width: 24%;
+    &::before {
+      content: '';
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 50%;
+      left: 0;
+      z-index: -1;
+      background-color: ${(props) => props.color};
+    }
   }
 `;
 const RepoName = styled.div`

@@ -16,6 +16,7 @@ export const GlobalStyle = createGlobalStyle`
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+
 }
 * {
   box-sizing: border-box;
@@ -53,6 +54,7 @@ time, mark, audio, video {
     border: 0;
     vertical-align: baseline;
     list-style: none;
+    overscroll-behavior: none;
 }
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure, 
@@ -64,7 +66,10 @@ body {
     min-height: 100vh;
 }
 #root {
-  height: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
 }
 ol, ul {
     list-style: none;

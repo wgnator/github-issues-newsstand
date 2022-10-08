@@ -6,8 +6,8 @@ import PageNavSection from './sections/PageNavSection';
 import { theme } from '../../styles/theme';
 import { useState } from 'react';
 import { BsArrowsAngleExpand } from 'react-icons/bs';
-import { ISSUE_STATE, MOBILE_WIDTH, VIEW_MODE } from '../../consts/consts';
-import { IssueOpenOrClosedState, ViewMode } from '../../types/states';
+import { ISSUE_STATE } from '../../consts/consts';
+import { IssueOpenOrClosedState } from '../../types/states';
 
 export type IssueOptions = {
   openOrClosed: IssueOpenOrClosedState;
@@ -17,13 +17,11 @@ export type IssueOptions = {
 export default function IssuesBox({
   repoName,
   isExpanded,
-  viewMode,
   repoIndex,
   onExpandCallback,
 }: {
   repoName: string | undefined;
   isExpanded: boolean;
-  viewMode: ViewMode;
   repoIndex: number;
   onExpandCallback?: () => void;
 }) {
@@ -39,32 +37,39 @@ export default function IssuesBox({
     page: 1,
   });
 
-  const { hasNextPage, ...queryState } = useIssuesQuery(repoName, optionsState);
+  const { data, hasNextPage, isLoading, isFetchingNextPage, isError } = useIssuesQuery(
+    repoName,
+    optionsState.openOrClosed,
+    optionsState.page,
+  );
 
   return (
-    <Container isExpanded={isExpanded} viewMode={viewMode}>
+    <Container isExpanded={isExpanded}>
       <SubContainer isExpanded={isExpanded} index={repoIndex}>
         <TitleSection color={theme.repoColor[repoIndex]}>
           <RepoTitle>{repoName}</RepoTitle>
           {onExpandCallback && (
-            <ExpandIconWrapper onClick={() => onExpandCallback()}>
+            <ExpandIconWrapper onClick={onExpandCallback}>
               <ExpandIcon />
             </ExpandIconWrapper>
           )}
         </TitleSection>
         <IssuesToolbarSection
-          optionsState={optionsState}
-          setOptionsState={setOptionsState}
+          issuesOpenOrClosed={optionsState.openOrClosed}
+          toggleOpenOrClosed={(issuesOpenOrClosed) =>
+            setOptionsState((prevState) => ({ ...prevState, openOrClosed: issuesOpenOrClosed }))
+          }
         />
-
-        <IssuesSection viewMode={viewMode} queryState={queryState} />
-
+        <IssuesSection
+          issues={data?.pages[optionsState.page - 1]}
+          queryState={{ isLoading, isError }}
+          shouldScrollTopOnUpdate={true}
+        />
         <PageNavSection
           page={optionsState.page}
           hasNextPage={hasNextPage}
-          setPage={(page) =>
-            setOptionsState((prevState) => ({ ...prevState, page: page }))
-          }
+          isFetchingNextPage={isFetchingNextPage}
+          setPage={(page) => setOptionsState((prevState) => ({ ...prevState, page: page }))}
         />
       </SubContainer>
     </Container>
@@ -78,27 +83,11 @@ const ErrorMessage = styled.div`
   justify-content: center;
   align-items: center;
 `;
-const Container = styled.div<{ isExpanded?: boolean; viewMode?: ViewMode }>`
+const Container = styled.div<{ isExpanded?: boolean }>`
   overflow: hidden;
   transition: height 0.3s linear;
-
-  @media (min-width: ${MOBILE_WIDTH}px) {
-    width: 49%;
-    height: ${(props) =>
-      props.viewMode === VIEW_MODE.MULTIPLE
-        ? 'calc((100vh - 9rem) / 2)'
-        : 'calc(100vh - 9rem)'};
-  }
-
-  @media (max-width: ${MOBILE_WIDTH}px) {
-    width: 100%;
-    height: ${(props) =>
-      props.viewMode === VIEW_MODE.MULTIPLE
-        ? props.isExpanded
-          ? '80vh'
-          : '40vh'
-        : '100%'};
-  }
+  width: 49%;
+  height: calc((100vh - 9rem) / 2);
 `;
 
 const SubContainer = styled.div<{ isExpanded: boolean; index: number }>`
@@ -116,10 +105,9 @@ const SubContainer = styled.div<{ isExpanded: boolean; index: number }>`
     border-bottom: none;
   }
 
-  @media (min-width: ${MOBILE_WIDTH}px) {
-    ${(props) =>
-      props.isExpanded &&
-      `
+  ${(props) =>
+    props.isExpanded &&
+    `
       position: absolute;
 
       z-index: 10;
@@ -128,15 +116,14 @@ const SubContainer = styled.div<{ isExpanded: boolean; index: number }>`
       ${props.index === 0 || props.index === 1 ? 'top: 1rem; ' : 'bottom: 1rem;'}
       animation: expand 0.2s linear forwards;`}
 
-    @keyframes expand {
-      0% {
-        width: 49%;
-        height: 49%;
-      }
-      100% {
-        width: calc(100% - 2rem);
-        height: calc(100% - 2rem);
-      }
+  @keyframes expand {
+    0% {
+      width: 49%;
+      height: 49%;
+    }
+    100% {
+      width: calc(100% - 2rem);
+      height: calc(100% - 2rem);
     }
   }
 `;

@@ -8,6 +8,7 @@ export default function useIntersectionObserver(
 ) {
   const onIntersection = (entries: IntersectionObserverEntry[]) => {
     if (entries[0].isIntersecting) {
+      console.log('intersecting...');
       callback();
     }
   };
@@ -15,7 +16,7 @@ export default function useIntersectionObserver(
   React.useEffect(() => {
     const options = {
       root: rootRef.current,
-      rootMargin: '200px',
+      rootMargin: '0px',
       threshold: 0,
     };
     const observer = new IntersectionObserver(onIntersection, options);

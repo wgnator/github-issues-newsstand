@@ -31,6 +31,7 @@ export default function useReposQuery() {
       retry: (failureCount, error) =>
         !(error.message === ERROR_MESSAGE.API_REQUEST_LIMIT_EXCEEDED || failureCount > 1),
       refetchOnWindowFocus: false,
+      refetchOnMount: false,
       onError: (error) =>
         toast.error('Repository search failed: ' + error.message, { duration: 3000 }),
       getNextPageParam: (lastPage, allPages) => {
