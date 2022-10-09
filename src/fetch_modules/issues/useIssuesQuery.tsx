@@ -19,7 +19,6 @@ export default function useIssuesQuery(
   const getHasNextPage = (data: Issue[][]) =>
     data.length === currentPage &&
     fetchNextPage({ pageParam: currentPage + 1 }).then((result) => {
-      console.log('next page fetched:', result);
       setHasNextPage(
         (result?.data?.pages[currentPage] && result.data.pages[currentPage].length > 0) || false,
       );

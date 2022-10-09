@@ -13,7 +13,6 @@ export default function IssuesPageMobile() {
   const { repoId: selectedRepoId } = useParams();
   const containerRef = useRef<HTMLDivElement>(null);
   const screenWidth = useRecoilValue(screenSizeState);
-  console.log('issue page rendering...');
 
   useEffect(() => {
     containerRef.current &&

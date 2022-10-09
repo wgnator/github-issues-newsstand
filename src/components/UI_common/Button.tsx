@@ -17,8 +17,10 @@ const Container = styled.button<{ color?: string }>`
   align-items: center;
   transition: background-color 0.1s, color 0.1s;
 
-  &:hover {
-    background-color: ${(props) => (props.color ? props.color : theme.primaryDarkColor)};
-    color: white;
+  @media (pointer: fine) {
+    &:hover {
+      background-color: ${(props) => (props.color ? props.color : theme.primaryDarkColor)};
+      color: white;
+    }
   }
 `;

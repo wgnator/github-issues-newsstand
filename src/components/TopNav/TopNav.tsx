@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { useRef, useState } from 'react';
-import SearchInputBox from './SearchInputBox';
+import SearchInput from './SearchInput';
 import RepoSearchResultDropdown from './RepoSearchResult';
 import useReposQuery from '../../fetch_modules/repos/useReposQuery';
 import { theme } from '../../styles/theme';
@@ -24,7 +24,7 @@ export default function TopNav() {
   const onInputSubmit = (searchString: string) => setSearchQuery(encodeURIComponent(searchString));
   const onInputFocus = () => setIsShowingSearchResult(true);
   const onInputChange = (searchString: string) => setIsShowingSearchResult(!!searchString);
-  const onClose = () => setIsShowingSearchResult(false);
+  const onClose = () => (setIsShowingSearchResult(false), setSearchQuery(''));
 
   useDetectOutsideClick([outsideClickRef], () => setIsShowingSearchResult(false));
 
@@ -33,8 +33,8 @@ export default function TopNav() {
       {isShowingSearchResult && <Veil />}
       <Title onClick={() => navigate('/')}>Github Issues Newsstand</Title>
       <InputBoxWrapper ref={outsideClickRef}>
-        <SearchInputBox
-          handleOnSearchFromParent={onInputAutoSearch}
+        <SearchInput
+          handleOnAutoSearchFromParent={onInputAutoSearch}
           handleOnSubmitFromParent={onInputSubmit}
           handleOnFocusFromParent={onInputFocus}
           handleOnChangeFromParent={onInputChange}
@@ -62,6 +62,7 @@ const Container = styled.header`
     flex-direction: column;
     height: fit-content;
     gap: 0.3rem;
+    padding: 0.5rem 1rem;
   }
 `;
 

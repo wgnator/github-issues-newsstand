@@ -20,7 +20,7 @@ export default function useReposQuery() {
     error,
     data,
   } = useInfiniteQuery<Repository[], AxiosError>(
-    ['searchedRepos', searchQuery],
+    ['repoSearchResults', searchQuery],
     ({ pageParam = 1 }) => (searchQuery ? searchRepos(searchQuery, pageParam) : []),
     {
       cacheTime: 0,

@@ -3,6 +3,7 @@
 Search and subscribe to github repositories and see their issues at once
 
 # How to run / 실행 방법
+
 ```bash
 git clone https://github.com/wgnator/github-issues-newsstand.git
 cd github-issues-newsstand
@@ -36,13 +37,11 @@ SavedRepos: LocalStorage & Global(Recoil) / Repository[]<max:4>
 
 Issues: React-Query / Query Key: ['issues', 'repoName', 'openOrClosed', 'page']
 
-
 ## UI & Dataflow Sketch(ver. 1)
 
 <img width="825" alt="Screen Shot 2022-09-23 at 4 03 40 AM" src="https://user-images.githubusercontent.com/69628701/191830897-68a4a9f8-cbd4-4033-aacb-f76905fe9d5c.png">
 
 <img width="977" alt="Screen Shot 2022-09-27 at 1 24 46 AM" src="https://user-images.githubusercontent.com/69628701/192754571-73263dcc-7144-4ffc-bd4d-2cb3aa36746c.png">
-
 
 ## UI & Dataflow Sketch(ver. 2)
 
@@ -51,6 +50,7 @@ Issues: React-Query / Query Key: ['issues', 'repoName', 'openOrClosed', 'page']
 <img width="1040" alt="Screen Shot 2022-09-27 at 6 57 12 PM" src="https://user-images.githubusercontent.com/69628701/192754594-72251812-ea2d-4f8e-8ae2-8248ff1f85fb.png">
 
 ## Tree
+
 ```bash
 ├── App.tsx
 ├── UI_hooks
@@ -75,7 +75,7 @@ Issues: React-Query / Query Key: ['issues', 'repoName', 'openOrClosed', 'page']
 │   ├── TopNav
 │   │   ├── RepoItem.tsx
 │   │   ├── RepoSearchResult.tsx
-│   │   ├── SearchInputBox.tsx
+│   │   ├── SearchInput.tsx
 │   │   └── TopNav.tsx
 │   └── UI_common
 │       ├── AlertDialog.tsx
@@ -113,6 +113,7 @@ Issues: React-Query / Query Key: ['issues', 'repoName', 'openOrClosed', 'page']
 │   └── sort.ts
 └── vite-env.d.ts
 ```
+
 ## Data Types
 
 ```

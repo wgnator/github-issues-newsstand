@@ -32,7 +32,6 @@ export default function IssuesBoxMobile({
   const { data, hasNextPageInfiniteQuery, isLoading, isFetching, isFetchingNextPage, isError } =
     useIssuesQuery(repoName, issuesOpenOrClosed, page);
   const issues = data?.pages.flat();
-  console.log(page);
 
   useIntersectionObserver(bottomDetectorRef, rootRef, () => setPage(page + 1), [data]);
 

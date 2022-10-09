@@ -5,17 +5,17 @@ import { MdCancel } from 'react-icons/md';
 import Button from '../UI_common/Button';
 import { theme } from '../../styles/theme';
 
-const SearchInputBox = ({
-  handleOnSearchFromParent,
+const SearchInput = ({
+  handleOnAutoSearchFromParent,
   handleOnChangeFromParent,
   handleOnSubmitFromParent,
   handleOnFocusFromParent,
   placeholder,
 }: {
-  handleOnSearchFromParent: (searchString: string) => void;
-  handleOnChangeFromParent: (searchString: string) => void;
+  handleOnAutoSearchFromParent?: (searchString: string) => void;
+  handleOnChangeFromParent?: (searchString: string) => void;
   handleOnSubmitFromParent: (searchString: string) => void;
-  handleOnFocusFromParent: () => void;
+  handleOnFocusFromParent?: () => void;
   placeholder: string;
 }) => {
   const [searchString, setSearchString] = useState('');
@@ -25,18 +25,22 @@ const SearchInputBox = ({
   const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) =>
     setSearchString(event.target.value);
   const toggleAutoSearch = () => setIsAutoSearchOn((prevState) => !prevState);
-  const clearSearch = () => setSearchString('');
+  const onAutoSearchClick = (event: React.MouseEvent<HTMLElement>) => {
+    event.target instanceof HTMLButtonElement && event.target.blur();
+    toggleAutoSearch();
+  };
+  const clearSearch = () => (setSearchString(''), inputRef.current && inputRef.current.focus());
   const handleOnSubmit = () => handleOnSubmitFromParent(searchString);
 
   useEffect(() => {
-    if (isAutoSearchOn) handleOnSearchFromParent(searchString);
-    handleOnChangeFromParent(searchString);
+    if (isAutoSearchOn && handleOnAutoSearchFromParent) handleOnAutoSearchFromParent(searchString);
+    if (handleOnChangeFromParent) handleOnChangeFromParent(searchString);
   }, [searchString]);
 
   return (
-    <InputBox onSubmit={(event) => event.preventDefault()}>
+    <Container onSubmit={(event) => event.preventDefault()}>
       <InputWrapper>
-        <SearchInput
+        <Input
           ref={inputRef}
           type="text"
           id="search_string"
@@ -47,22 +51,24 @@ const SearchInputBox = ({
           onFocus={handleOnFocusFromParent}
         />
         {searchString && (
-          <IconWrapper>
+          <CancelIconWrapper>
             <CancelIcon onClick={clearSearch} />
-          </IconWrapper>
+          </CancelIconWrapper>
         )}
-        <AutoSearchToggleButton type="button" isOn={isAutoSearchOn} onClick={toggleAutoSearch}>
+        <AutoSearchToggleButton type="button" isOn={isAutoSearchOn} onClick={onAutoSearchClick}>
           자동검색 {isAutoSearchOn ? 'ON' : 'OFF'}
         </AutoSearchToggleButton>
       </InputWrapper>
       <SubmitSearch type="submit" onClick={handleOnSubmit} title="submit search">
-        <AiOutlineSearch />
+        <SearchIconWrapper>
+          <SearchIcon />
+        </SearchIconWrapper>
       </SubmitSearch>
-    </InputBox>
+    </Container>
   );
 };
 
-const InputBox = styled.form`
+const Container = styled.form`
   width: 100%;
   height: 100%;
   display: flex;
@@ -81,15 +87,16 @@ const InputWrapper = styled.div`
   align-items: center;
   padding: 0 0.3rem;
 `;
-const SearchInput = styled.input`
+const Input = styled.input`
   width: 100%;
   height: 100%;
   padding: 0.5rem;
   border: none;
+  font-size: 1rem;
 `;
 
-const IconWrapper = styled.div`
-  width: 1.3rem;
+const CancelIconWrapper = styled.div`
+  width: 1.5rem;
   display: flex;
   align-items: center;
   margin-right: 0.5rem;
@@ -97,6 +104,19 @@ const IconWrapper = styled.div`
 const CancelIcon = styled(MdCancel)`
   width: 100%;
   color: rgba(0, 0, 0, 0.5);
+`;
+const SearchIconWrapper = styled.div`
+  width: 2rem;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  * {
+    color: ${theme.primaryBackgroundColor};
+  }
+`;
+const SearchIcon = styled(AiOutlineSearch)`
+  font-size: 1.3rem;
 `;
 const AutoSearchToggleButton = styled(Button)`
   font-size: 0.65rem;
@@ -117,11 +137,11 @@ const SubmitSearch = styled.button`
   height: 100%;
   border: 1px solid white;
   border-radius: 5px;
-  * {
+  /* * {
     width: 100%;
     height: 100%;
     color: white;
-  }
+  } */
 `;
 
-export default SearchInputBox;
+export default SearchInput;
