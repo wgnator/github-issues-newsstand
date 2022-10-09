@@ -118,6 +118,7 @@ const Container = styled.ul`
   @media (max-width: ${MOBILE_WIDTH}px) {
     width: 100%;
     left: 0;
+    font-size: 0.8rem;
   }
 `;
 
