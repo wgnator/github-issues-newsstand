@@ -1,43 +1,41 @@
-import { useEffect, useRef } from 'react';
+import { ReactNode, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import IssueItem from '../IssueItem';
-import { VIEW_MODE } from '../../../consts/consts';
 import { theme } from '../../../styles/theme';
 import { Issue } from '../../../types/data';
-import { ViewMode } from '../../../types/states';
 
 export default function IssuesSection({
+  shouldScrollTopOnUpdate,
+  issues,
   queryState,
-  viewMode,
+  children,
 }: {
+  shouldScrollTopOnUpdate: boolean;
+  issues: Issue[] | undefined;
   queryState: {
-    data: Issue[] | undefined;
     isLoading: boolean;
-    isFetching: boolean;
     isError: boolean;
   };
-  viewMode: ViewMode;
+  children?: ReactNode;
 }) {
-  const { data: issues, isLoading, isFetching, isError } = queryState;
+  const { isLoading, isError } = queryState;
   const containerRef = useRef<HTMLTableSectionElement>(null);
 
   useEffect(() => {
-    if (containerRef.current) containerRef.current.scrollTop = 0;
-    if (viewMode === VIEW_MODE.SINGLE) window.scrollTo(0, 0);
+    containerRef.current && shouldScrollTopOnUpdate && (containerRef.current.scrollTop = 0);
   }, [issues]);
 
   return (
     <Container ref={containerRef}>
-      {(isLoading || isFetching) && (
+      {isLoading && (
         <IssuesContainer>
-          {new Array(5).fill(null).map((_, index) => (
+          {new Array(10).fill(null).map((_, index) => (
             <IssueItem key={index} />
           ))}
         </IssuesContainer>
       )}
       {issues &&
         !isLoading &&
-        !isFetching &&
         (issues.length > 0 ? (
           <IssuesContainer>
             {issues.map((issue) => (
@@ -48,6 +46,7 @@ export default function IssuesSection({
           <NoIssues>No Issues</NoIssues>
         ))}
       {isError && <NoIssues>데이터를 가져오는데 문제가 있습니다.</NoIssues>}
+      {children}
     </Container>
   );
 }
@@ -55,7 +54,10 @@ export default function IssuesSection({
 const Container = styled.section`
   width: 100%;
   height: 100%;
-  overflow: auto;
+  min-height: 0;
+
+  overflow-y: auto;
+  -webkit-overflow-scrolling-y: auto;
 `;
 
 const IssuesContainer = styled.ul`

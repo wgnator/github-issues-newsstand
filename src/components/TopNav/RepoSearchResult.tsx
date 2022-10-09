@@ -39,14 +39,18 @@ export default function RepoSearchResultDropdown({
   const [alert, setAlert] = useState({ isShowing: false, message: '' });
 
   const saveRepo = (repo: Repository) => {
-    if (savedRepos.length < 4) {
-      setSavedRepos([...savedRepos, repo]);
-      close();
-    } else
-      setAlert({
+    if (savedRepos.length === 4)
+      return setAlert({
         isShowing: true,
         message: '리포지토리 저장 가능 한도(4개)를 초과했어요.',
       });
+    if (savedRepos.some((savedRepo) => savedRepo.id === repo.id))
+      return setAlert({
+        isShowing: true,
+        message: '같은 리포지토리가 이미 존재합니다.',
+      });
+    setSavedRepos([...savedRepos, repo]);
+    close();
   };
 
   const onAlertDialogConfirm = (isConfirmed: boolean) =>
@@ -78,10 +82,7 @@ export default function RepoSearchResultDropdown({
         flattenedPage.map((repo) => <RepoItem key={repo.id} repo={repo} saveRepo={saveRepo} />)
       ) : isLoading || isFetching ? (
         <SpinnerWrapper>
-          <LoadingSpinner
-            color={theme.primaryColor}
-            backgroundColor={theme.secondaryBackgroundColor}
-          />
+          <LoadingSpinner color={theme.primaryDarkColor} />
         </SpinnerWrapper>
       ) : (
         <Status>No Results</Status>
@@ -117,6 +118,7 @@ const Container = styled.ul`
   @media (max-width: ${MOBILE_WIDTH}px) {
     width: 100%;
     left: 0;
+    font-size: 0.8rem;
   }
 `;
 

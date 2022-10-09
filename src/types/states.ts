@@ -1,4 +1,4 @@
-import { ISSUE_STATE, VIEW_MODE } from '../consts/consts';
+import { ISSUE_STATE } from '../consts/consts';
 
-export type ViewMode = typeof VIEW_MODE[keyof typeof VIEW_MODE];
+export type MediaType = 'mobile' | 'desktop/tablet';
 export type IssueOpenOrClosedState = typeof ISSUE_STATE[keyof typeof ISSUE_STATE];

@@ -10,6 +10,8 @@ const Container = styled.main`
   display: flex;
   flex-direction: column;
   justify-content: stretch;
-  height: calc(100% - 6rem);
+  height: 100%;
+  width: 100%;
+  min-height: 0;
   background-color: ${theme.primaryBackgroundColor};
 `;

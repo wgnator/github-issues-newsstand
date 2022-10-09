@@ -4,22 +4,23 @@ import Button from '../../UI_common/Button';
 export default function PageNavSection({
   page,
   hasNextPage,
+  isFetchingNextPage,
   setPage,
 }: {
   page: number;
-  hasNextPage: boolean | 'pending';
+  hasNextPage: boolean;
+  isFetchingNextPage: boolean;
   setPage: (page: number) => void;
 }) {
   return (
     <Container>
       {page > 1 && <PrevButton onClick={() => setPage(page - 1)}>&lt; Previous Page</PrevButton>}
       Page {page}
-      {hasNextPage &&
-        (hasNextPage === true ? (
-          <NextButton onClick={() => setPage(page + 1)}>Next Page &gt;</NextButton>
-        ) : (
-          <LoadingText>Loading...</LoadingText>
-        ))}
+      {isFetchingNextPage ? (
+        <LoadingText>Loading...</LoadingText>
+      ) : (
+        hasNextPage && <NextButton onClick={() => setPage(page + 1)}>Next Page &gt;</NextButton>
+      )}
     </Container>
   );
 }

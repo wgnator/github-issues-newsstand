@@ -1,37 +1,28 @@
-import { Dispatch } from 'react';
 import styled from 'styled-components';
 import { ISSUE_STATE } from '../../../consts/consts';
 import { theme } from '../../../styles/theme';
 import { IssueOpenOrClosedState } from '../../../types/states';
-import { IssueOptions } from './../IssuesBox';
 
 export default function IssuesToolbarSection({
-  optionsState,
-  setOptionsState,
+  issuesOpenOrClosed,
+  toggleOpenOrClosed,
 }: {
-  optionsState: IssueOptions;
-  setOptionsState: Dispatch<IssueOptions>;
+  issuesOpenOrClosed: IssueOpenOrClosedState;
+  toggleOpenOrClosed: (issueOpenOrClosed: IssueOpenOrClosedState) => void;
 }) {
-  const toggleIssueStateFilter = (issueState: IssueOpenOrClosedState) => {
-    setOptionsState({
-      openOrClosed: issueState,
-      page: 1,
-    });
-  };
-
   return (
     <Container>
       <div>Issue State: </div>
       <ChooseStateButtons>
         <IssueStateButton
-          selected={optionsState.openOrClosed === ISSUE_STATE.OPEN}
-          onClick={() => toggleIssueStateFilter(ISSUE_STATE.OPEN)}
+          selected={issuesOpenOrClosed === ISSUE_STATE.OPEN}
+          onClick={() => toggleOpenOrClosed(ISSUE_STATE.OPEN)}
         >
           OPEN
         </IssueStateButton>
         <IssueStateButton
-          selected={optionsState.openOrClosed === ISSUE_STATE.CLOSED}
-          onClick={() => toggleIssueStateFilter(ISSUE_STATE.CLOSED)}
+          selected={issuesOpenOrClosed === ISSUE_STATE.CLOSED}
+          onClick={() => toggleOpenOrClosed(ISSUE_STATE.CLOSED)}
         >
           CLOSED
         </IssueStateButton>
