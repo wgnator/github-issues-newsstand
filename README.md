@@ -21,6 +21,10 @@ http://localhost:5173 접속
 
 ![github_newsstand_desktop_part2](https://user-images.githubusercontent.com/69628701/192781190-56b01786-b718-4813-87f2-86a048f6f3ae.gif)
 
+- Mobile UI
+
+![Kapture 2022-10-09 at 10 19 12](https://user-images.githubusercontent.com/69628701/194733236-7992656c-eb80-4d54-9c3c-10acfac431e2.gif)
+
 # Objectives
 
 - GitHub의 Public Repository를 검색 및 등록하여 Issue들을 모아서 볼 수 있다.
@@ -52,24 +56,28 @@ Issues: React-Query / Query Key: ['issues', 'repoName', 'openOrClosed', 'page']
 <img width="1040" alt="Screen Shot 2022-09-27 at 6 57 12 PM" src="https://user-images.githubusercontent.com/69628701/192754594-72251812-ea2d-4f8e-8ae2-8248ff1f85fb.png">
 
 ## Tree
+_/src/_
 ```bash
+.
 ├── App.tsx
 ├── UI_hooks
 │   ├── useDetectOutsideClick.ts
-│   └── useIntersectionObserver.ts
-├── assets
-│   └── react.svg
+│   ├── useIntersectionObserver.ts
+│   └── useSwipe.ts
 ├── atoms
-│   └── reposState.ts
+│   ├── reposState.ts
+│   └── screenSizeState.ts
 ├── axios
 │   └── reposService.ts
 ├── components
 │   ├── Issues
 │   │   ├── IssueItem.tsx
 │   │   ├── IssuesBox.tsx
-│   │   ├── IssuesSection.tsx
-│   │   ├── IssuesToolbarSection.tsx
-│   │   └── PageNavSection.tsx
+│   │   ├── IssuesBoxMobile.tsx
+│   │   └── sections
+│   │       ├── IssuesSection.tsx
+│   │       ├── IssuesToolbarSection.tsx
+│   │       └── PageNavSection.tsx
 │   ├── Layout.tsx
 │   ├── Main.tsx
 │   ├── RepositoriesNav.tsx
@@ -101,6 +109,8 @@ Issues: React-Query / Query Key: ['issues', 'repoName', 'openOrClosed', 'page']
 ├── main.tsx
 ├── pages
 │   ├── IssuesPage.tsx
+│   ├── IssuesPageMobile.tsx
+│   ├── LoadingPage.tsx
 │   └── PageNotFound.tsx
 ├── router.tsx
 ├── styles
@@ -110,8 +120,7 @@ Issues: React-Query / Query Key: ['issues', 'repoName', 'openOrClosed', 'page']
 │   ├── data.ts
 │   └── states.ts
 ├── utils
-│   ├── debouncer.ts
-│   └── sort.ts
+│   └── debouncer.ts
 └── vite-env.d.ts
 ```
 ## Data Types
