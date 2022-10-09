@@ -10,6 +10,7 @@ cd github-issues-newsstand
 npm install
 npm run dev
 ```
+http://localhost:5173 접속
 
 # At a glance / 미리보기
 
@@ -20,6 +21,10 @@ npm run dev
 - Repository Auto Search with Debouncer / 2 View Modes: Show All(default) & Single Repo Page (by selecting from Repository Nav)
 
 ![github_newsstand_desktop_part2](https://user-images.githubusercontent.com/69628701/192781190-56b01786-b718-4813-87f2-86a048f6f3ae.gif)
+
+- Mobile UI
+
+![Kapture 2022-10-09 at 10 19 12](https://user-images.githubusercontent.com/69628701/194733236-7992656c-eb80-4d54-9c3c-10acfac431e2.gif)
 
 # Objectives
 
@@ -52,23 +57,26 @@ Issues: React-Query / Query Key: ['issues', 'repoName', 'openOrClosed', 'page']
 ## Tree
 
 ```bash
+.
 ├── App.tsx
 ├── UI_hooks
 │   ├── useDetectOutsideClick.ts
-│   └── useIntersectionObserver.ts
-├── assets
-│   └── react.svg
+│   ├── useIntersectionObserver.ts
+│   └── useSwipe.ts
 ├── atoms
-│   └── reposState.ts
+│   ├── reposState.ts
+│   └── screenSizeState.ts
 ├── axios
 │   └── reposService.ts
 ├── components
 │   ├── Issues
 │   │   ├── IssueItem.tsx
 │   │   ├── IssuesBox.tsx
-│   │   ├── IssuesSection.tsx
-│   │   ├── IssuesToolbarSection.tsx
-│   │   └── PageNavSection.tsx
+│   │   ├── IssuesBoxMobile.tsx
+│   │   └── sections
+│   │       ├── IssuesSection.tsx
+│   │       ├── IssuesToolbarSection.tsx
+│   │       └── PageNavSection.tsx
 │   ├── Layout.tsx
 │   ├── Main.tsx
 │   ├── RepositoriesNav.tsx
@@ -100,6 +108,8 @@ Issues: React-Query / Query Key: ['issues', 'repoName', 'openOrClosed', 'page']
 ├── main.tsx
 ├── pages
 │   ├── IssuesPage.tsx
+│   ├── IssuesPageMobile.tsx
+│   ├── LoadingPage.tsx
 │   └── PageNotFound.tsx
 ├── router.tsx
 ├── styles
@@ -109,8 +119,7 @@ Issues: React-Query / Query Key: ['issues', 'repoName', 'openOrClosed', 'page']
 │   ├── data.ts
 │   └── states.ts
 ├── utils
-│   ├── debouncer.ts
-│   └── sort.ts
+│   └── debouncer.ts
 └── vite-env.d.ts
 ```
 
