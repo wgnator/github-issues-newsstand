@@ -16,7 +16,7 @@ export default function useIntersectionObserver(
   React.useEffect(() => {
     const options = {
       root: rootRef.current,
-      rootMargin: '0px',
+      rootMargin: '200px',
       threshold: 0,
     };
     const observer = new IntersectionObserver(onIntersection, options);

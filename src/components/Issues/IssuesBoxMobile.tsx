@@ -29,11 +29,8 @@ export default function IssuesBoxMobile({
   const [page, setPage] = useState(1);
   const rootRef = useRef(null);
   const bottomDetectorRef = useRef(null);
-  const { data, hasNextPage, isLoading, isFetching, isFetchingNextPage, isError } = useIssuesQuery(
-    repoName,
-    issuesOpenOrClosed,
-    page,
-  );
+  const { data, hasNextPageInfiniteQuery, isLoading, isFetching, isFetchingNextPage, isError } =
+    useIssuesQuery(repoName, issuesOpenOrClosed, page);
   const issues = data?.pages.flat();
   console.log(page);
 
@@ -59,8 +56,8 @@ export default function IssuesBoxMobile({
             <LoadingSpinner color={theme.primaryDarkColor} />
           </SpinnerWrapper>
         )}
-        {hasNextPage && !isFetchingNextPage && (
-          <BottomDetector ref={bottomDetectorRef}>Detector</BottomDetector>
+        {hasNextPageInfiniteQuery && !isFetchingNextPage && (
+          <BottomDetector ref={bottomDetectorRef} />
         )}
       </IssuesSection>
     </Container>
