@@ -8,7 +8,6 @@ export default function useIntersectionObserver(
 ) {
   const onIntersection = (entries: IntersectionObserverEntry[]) => {
     if (entries[0].isIntersecting) {
-      console.log('intersecting...');
       callback();
     }
   };
