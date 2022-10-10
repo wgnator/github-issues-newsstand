@@ -34,15 +34,15 @@ http://localhost:5173 접속
 
 ## State Management
 
-MediaType: Recoil / 'desktop/tablet' | 'mobile'
+```MediaType```: Recoil / ```'desktop/tablet' | 'mobile'```
 
-searchQuery: TopNav component state / URI encoded string
+```searchQuery```: TopNav component state / URI encoded string
 
-RepoSearchResult: React-Query (useInfiniteQuery) / Query Key: ['repoSearchResults', searchQuery ] / Repository[]
+```RepoSearchResult```: React-Query (useInfiniteQuery) / Query Key: ```['repoSearchResults', searchQuery ] /* Repository[] */```
 
-SavedRepos: LocalStorage & Global(Recoil) / Repository[]<max:4>
+```SavedRepos```: LocalStorage & Recoil / ```Repository[] /* <max:4> */```
 
-Issues: React-Query (useInfiniteQuery) / Query Key: ['issues', repoName, openOrClosed] / Issue[]
+```Issues```: React-Query (useInfiniteQuery) / Query Key: ```['issues', repoName, openOrClosed] /* Issue[] */```
 
 ## UI & Dataflow Sketch(ver. 1)
 
