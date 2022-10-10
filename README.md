@@ -32,15 +32,17 @@ http://localhost:5173 접속
 
 # Project Plan
 
-## State management
+## State Management
 
-RepoSearchText: TopNav component state
+MediaType: Recoil / 'desktop/tablet' | 'mobile'
 
-RepoSearchResult: React-Query (useInfiniteQuery) / { page: Repository[] }
+searchQuery: TopNav component state / URI encoded string
+
+RepoSearchResult: React-Query (useInfiniteQuery) / Query Key: ['repoSearchResults', searchQuery ] / Repository[]
 
 SavedRepos: LocalStorage & Global(Recoil) / Repository[]<max:4>
 
-Issues: React-Query / Query Key: ['issues', 'repoName', 'openOrClosed', 'page']
+Issues: React-Query (useInfiniteQuery) / Query Key: ['issues', repoName, openOrClosed] / Issue[]
 
 ## UI & Dataflow Sketch(ver. 1)
 
