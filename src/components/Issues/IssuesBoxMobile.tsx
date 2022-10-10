@@ -55,7 +55,7 @@ export default function IssuesBoxMobile({
             <LoadingSpinner color={theme.primaryDarkColor} />
           </SpinnerWrapper>
         )}
-        {hasNextPageInfiniteQuery && !isFetchingNextPage && (
+        {hasNextPageInfiniteQuery && !isLoading && !isFetchingNextPage && (
           <BottomDetector ref={bottomDetectorRef} />
         )}
       </IssuesSection>

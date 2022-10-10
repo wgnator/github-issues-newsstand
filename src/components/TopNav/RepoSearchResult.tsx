@@ -87,7 +87,9 @@ export default function RepoSearchResultDropdown({
       ) : (
         <Status>No Results</Status>
       )}
-      {hasNextPage && !isFetchingNextPage && <BottomDetector ref={bottomDetectorRef} />}
+      {hasNextPage && !isLoading && !isFetchingNextPage && (
+        <BottomDetector ref={bottomDetectorRef} />
+      )}
 
       {isFetchingNextPage && <Loading>Loading...</Loading>}
       {alert.isShowing && (
