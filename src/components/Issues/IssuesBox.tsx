@@ -4,7 +4,7 @@ import IssuesSection from './sections/IssuesSection';
 import IssuesToolbarSection from './sections/IssuesToolbarSection';
 import PageNavSection from './sections/PageNavSection';
 import { theme } from '../../styles/theme';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { BsArrowsAngleExpand } from 'react-icons/bs';
 import { ISSUE_STATE } from '../../consts/consts';
 import { IssueOpenOrClosedState } from '../../types/states';
@@ -42,6 +42,8 @@ export default function IssuesBox({
     optionsState.openOrClosed,
     optionsState.page,
   );
+  const renderTimes = useRef(0);
+  console.log(repoName, ' issues box rendering...', renderTimes.current++);
 
   return (
     <Container isExpanded={isExpanded}>
